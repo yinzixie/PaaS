@@ -23,7 +23,7 @@ import com.jcraft.jsch.SftpException;
 
 
 
-class UserEndThread extends Thread{
+class User extends Thread{
     private String id = "Earth";
     private Socket socket;
     private BufferedReader in;
@@ -45,7 +45,7 @@ class UserEndThread extends Thread{
             }
             } catch (IOException e) {
                 System.out.println("Can't receive message from server!\nError Details: ");
-                e.toString();
+                e.printStackTrace();
             }
         }
     }
@@ -57,7 +57,7 @@ class UserEndThread extends Thread{
             resp = in.readLine();
         } catch (IOException e) {
             System.out.println("Can't receive message from server!\nError Details: ");
-            e.toString();
+            e.printStackTrace();
         }
         return resp;
     }
@@ -70,7 +70,7 @@ class UserEndThread extends Thread{
             resp_type = in.readLine();
         } catch (IOException e) {
             System.out.println("Disconnect from server!\nDetails: ");
-            e.toString();
+            e.printStackTrace();
             keepConnection = false;
             return "Error";
         }
@@ -111,7 +111,7 @@ class UserEndThread extends Thread{
         else if(resp_type.equals(DefaultKeys.UPLOAD_FILE_FLAG)) {
             resp = receiveParameterMessageFromServer(in);
             String[] parameters = resp.split(" ");
-            if(uploadFile(parameters[0],parameters[1])) {
+            if(true){//(uploadFile(parameters[0],parameters[1])) {
                 out.println(DefaultKeys.END_UPLOAD_FILE_SUCCEED);
             }else {
                 out.println(DefaultKeys.END_UPLOAD_FILE_FAILED);
@@ -125,58 +125,12 @@ class UserEndThread extends Thread{
         return resp_type;
     }
 
-    public static void runCommand() {
-        try {
-            String command = "ls -a";
-            String host = "144.6.227.102";
-            String user = "ubuntu";
-            String privateKey = "D:\\University of Tasmania\\2019\\Semester 2\\KIT318 Big Data and Cloud Computing\\key.pem";
-            JSch jsch = new JSch();
-            Session session = jsch.getSession(user, host, 22);
-            Properties config = new Properties();
-            session.setPassword("utas");
-            jsch.addIdentity(privateKey);
-            System.out.println("identity added ");
-            config.put("StrictHostKeyChecking", "no");
-            session.setConfig(config);
-            session.connect();
-            Channel channel = session.openChannel("exec");
-            ((ChannelExec)channel).setCommand(command);
-
-            //channel.setInputStream(null);
-            //((ChannelExec)channel).setErrStream(System.err);
-            channel.setInputStream(System.in);
-            channel.connect();
-
-            InputStream input = channel.getInputStream();
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(input));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    System.out.println(line);
-                }
-
-            } catch (IOException io) {
-                System.out.println("Exception occurred during reading file from SFTP server due to " + io.getMessage());
-                io.getMessage();
-
-            } catch (Exception e) {
-                System.out.println("Exception occurred during reading file from SFTP server due to " + e.getMessage());
-                e.getMessage();
-
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
-
     private Boolean uploadFile(String src, String dst) {
         try {
-            String host = "144.6.227.102";
             String user = "ubuntu";
             String privateKey = "D:\\University of Tasmania\\2019\\Semester 2\\KIT318 Big Data and Cloud Computing\\key.pem";
             JSch jsch = new JSch();
-            Session session = jsch.getSession(user, host, 22);
+            Session session = jsch.getSession(user, DefaultKeys.masterIP, 22);
             Properties config = new Properties();
             //session.setPassword("KIT418@utas"); ////if password is empty please comment it
             jsch.addIdentity(privateKey);
@@ -265,38 +219,7 @@ class UserEndThread extends Thread{
         }
     }
 
-    public static void processCommand(String Command)
-    {
-        try
-        {
-
-            // create a new process
-            System.out.println("Creating Process");
-
-            ProcessBuilder builder = new ProcessBuilder(Command);
-            //builder.directory(new File("F:/eclipse/week10/src/"));
-            Process pro = builder.start();
-
-            // wait 10 seconds
-            System.out.println("Waiting");
-            Thread.sleep(10000);
-
-            // kill the process
-            pro.destroy();
-            System.out.println("Process destroyed");
-
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void printStr(String str) {
-        System.out.println(str);
-    }
-
-    public UserEndThread(InetAddress addr, int port) {
+    public User(InetAddress addr, int port) {
         System.out.println("Starting client: " + id);
         /*get current system time*/
         long startTime =  System.currentTimeMillis();
@@ -312,22 +235,6 @@ class UserEndThread extends Thread{
             // nothing needs to be cleaned up.
             System.out.println("Can't connect to server!\nError Details: " + e.toString());
         }
-
-        //set data reader and writer
-        try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }
-        catch(IOException e) {
-            System.out.println("Data stream from socket can't be get or writen: " + e.toString());
-            System.out.println("Trying to close client: " + id);
-            try {
-                socket.close();
-                System.out.println("Client closed succeed: " + id);
-            }
-            catch(IOException e2) {
-                System.out.println("Client can't be closed: " + e2.toString());
-            }
-        }
         start();
     }
 
@@ -335,9 +242,9 @@ class UserEndThread extends Thread{
         try {
             System.out.println("socket = " + socket);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             // Output is automatically flushed by PrintWriter:
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
 
             while (keepConnection) {
                 String resp = handleDataFromServerAndMakeRespond(in,out);
@@ -345,14 +252,16 @@ class UserEndThread extends Thread{
 
         } catch (IOException e) {
             System.out.println("Error Details: ");
-            e.toString();
+            e.printStackTrace();
         } finally {
             System.out.println("closing client...");
             try {
-                socket.close();
+                if(socket != null) {
+                    socket.close();
+                }
             } catch (IOException e) {
                 System.out.println("Can't close client socket!\nError Details: ");
-                e.toString();
+                e.printStackTrace();
             }
         }
     }
@@ -363,27 +272,15 @@ public class UserEnd {
     private static int PORT;
 
     public static void main(String[] args) {
-        SERVER_IP = "144.6.227.102";
-        PORT = 8080;
+        SERVER_IP = DefaultKeys.masterIP;//"115.146.84.200";//"144.6.227.102";
+        PORT = DefaultKeys.clientPort;
 
         try {
             InetAddress addr = InetAddress.getByName(SERVER_IP);
-            new UserEndThread(addr, PORT);
+            new User(addr, PORT);
         }catch(UnknownHostException e) {
             System.out.println("Can't get server address!\nError Details: ");
-            e.toString();
+            e.printStackTrace();
         }
-           /*while(true) {
-                printStr("");
-            }*/
-
-            // TODO Auto-generated method stub
-            //runCommand();
-            //processCommand("C:/Program Files/Java/jdk-12.0.2/bin/java.exe  F:/eclipse/week10/src/helloWorld");
-            //downloadFile();
-            String src = "F:\\temp\\ip_use.txt"; //
-            String dst = "/home/ubuntu/Input/test.txt"; //
-            //uploadFile(src,dst);
-            //printStr("asd");
     }
 }

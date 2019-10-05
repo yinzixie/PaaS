@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../jsch-0.1.55.jar!/" />
+          <root url="jar://$MODULE_DIR$/jsch-0.1.55.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,7 +19,27 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../openstack4j-3.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/openstack4j-3.1.1-20181013.160235-27-withdeps.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/openstack4j-3.1.1-20181013.160235-27-withdeps.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/slf4j-jdk14-1.7.24.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/slf4j-api-1.7.24.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
