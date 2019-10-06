@@ -2,11 +2,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientAPMonitor {
+public class ClientAPMonitor extends Thread{
+    ServerSocket s;
+
     public ClientAPMonitor() throws Exception {
         System.out.println("Start Client AP Monitor...");
-        ServerSocket s = new ServerSocket(DefaultKeys.clientPort);
+        s = new ServerSocket(DefaultKeys.clientPort);
+        start();
+    }
 
+    public void run(){
         try {
             while (true) {
                 // Blocks until a connection occurs:
@@ -14,7 +19,7 @@ public class ClientAPMonitor {
                 System.out.println("Client Connection accepted: " + s);
                 try {
                     new ServerOneClient(socket);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     // If it fails, close the socket,
                     // otherwise the thread will close it:
                     System.out.println("Client AP Monitor Failed to start!\nError Details:");
@@ -26,7 +31,12 @@ public class ClientAPMonitor {
             System.out.println("Error Details: ");
             e.toString();
         } finally {
-            s.close();
+            try {
+                s.close();
+            } catch (IOException e) {
+                System.out.println("Client AP Monitor Failed to close!\nError Details:");
+                e.printStackTrace();
+            }
         }
     }
 }

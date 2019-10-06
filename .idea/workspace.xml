@@ -2,28 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="acf61a26-fefb-4526-b9ff-0c66edd52053" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ClientAPMonitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Cloud.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MasterEnd.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ServerOneClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ServerOneWorker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/WorkerAPMonitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/WorkerEnd.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Job.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaaS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PaaS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/ClientAPMonitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/ClientAPMonitor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/Cloud.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/Cloud.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaaS/DefaultKeys.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/DefaultKeys.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaaS/HelloWorld.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaaS/Job.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/Job.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaaS/ServerEnd.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/MasterEnd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/MasterEnd.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaaS/ServerOneClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/ServerOneClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/ServerOneWorker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/ServerOneWorker.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaaS/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/Storage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaaS/UserEnd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/UserEnd.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/PaaS/UserEndThread.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/WorkerAPMonitor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PaaS/WorkerEnd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/WorkerEnd.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/PaaS/uploadFileTemp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PaaS/uploadFileTemp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ClientAPMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientAPMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cloud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cloud.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DefaultKeys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DefaultKeys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HelloWorld.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ServerEnd.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MasterEnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MasterEnd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Secretary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Secretary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerOneClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerOneClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerOneSecretary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerOneSecretary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerOneSecretaryAPMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerOneSecretaryAPMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerOneWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerOneWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ServerOneWorkerAPMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ServerOneWorkerAPMonitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserEnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserEnd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Worker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WorkerEnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WorkerEnd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WorkerEndAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WorkerEndAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uploadFileTemp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uploadFileTemp.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -44,15 +50,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/UserEnd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="275" column="38" selection-start-line="275" selection-start-column="38" selection-end-line="275" selection-end-column="38" />
+            <state relative-caret-position="171">
+              <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#receiveAndPrintMessageFromServer#0;class#User#0" />
                 <element signature="method#receiveParameterMessageFromServer#0;class#User#0" />
-                <element signature="method#handleDataFromServerAndMakeRespond#0;class#User#0" />
                 <element signature="method#uploadFile#0;class#User#0" />
                 <element signature="method#downloadFile#0;class#User#0" />
+                <element signature="method#User#0;class#User#0" />
               </folding>
             </state>
           </provider>
@@ -61,55 +66,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MasterEnd.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ClientAPMonitor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
-              <caret line="30" column="5" lean-forward="true" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+            <state relative-caret-position="61">
+              <caret line="66" column="54" selection-start-line="66" selection-start-column="54" selection-end-line="66" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#455#475#0" expanded="true" />
+                <element signature="e#566#586#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WorkerAPMonitor.java">
+        <entry file="file://$PROJECT_DIR$/src/WorkerEndAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="23" lean-forward="true" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Cloud.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2307#2308#0" expanded="true" />
-                <element signature="e#2392#2393#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WorkerEnd.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+            <state relative-caret-position="75">
+              <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -120,9 +92,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ServerOneClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+            <state relative-caret-position="95">
+              <caret line="150" column="13" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="13" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="method#sendInquiryMessageToClient#0;class#ServerOneClient#0" />
                 <element signature="method#sendParameterMessageToClient#0;class#ServerOneClient#0" />
                 <element signature="method#sendDisplayMessageToClient#0;class#ServerOneClient#0" />
@@ -130,7 +103,7 @@
                 <element signature="method#receiveClientReplyParameter#0;class#ServerOneClient#0" />
                 <element signature="method#generateJobID#0;class#ServerOneClient#0" />
                 <element signature="method#closeConnection#0;class#ServerOneClient#0" />
-                <element signature="method#startANewJob#0;class#ServerOneClient#0" />
+                <element signature="method#checkJobState#0;class#ServerOneClient#0" />
               </folding>
             </state>
           </provider>
@@ -139,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ServerOneWorker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+            <state relative-caret-position="305">
+              <caret line="74" column="19" selection-start-line="74" selection-start-column="19" selection-end-line="74" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -149,19 +122,55 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DefaultKeys.java">
+        <entry file="file://$PROJECT_DIR$/src/ServerOneSecretary.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="237">
-              <caret line="48" column="63" selection-start-line="48" selection-start-column="63" selection-end-line="48" selection-end-column="63" />
+            <state relative-caret-position="454">
+              <caret line="138" column="1" lean-forward="true" selection-start-line="138" selection-start-column="1" selection-end-line="138" selection-end-column="1" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Secretary.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="83" column="68" lean-forward="true" selection-start-line="83" selection-start-column="68" selection-end-line="83" selection-end-column="68" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/uploadFileTemp.java">
+        <entry file="file://$PROJECT_DIR$/src/Worker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2090">
-              <caret line="117" column="39" selection-start-line="117" selection-start-column="39" selection-end-line="117" selection-end-column="39" />
+            <state relative-caret-position="223">
+              <caret line="86" column="32" selection-start-line="86" selection-start-column="32" selection-end-line="86" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Job.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/WorkerEnd.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-100">
+              <caret line="11" column="37" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -187,8 +196,11 @@
       <find>runCommand()</find>
       <find>in</find>
       <find>sendInquiryMessageToClient</find>
-      <find>command</find>
       <find>e.toString</find>
+      <find>command</find>
+      <find>lock</find>
+      <find>jobQueue</find>
+      <find>Queue</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -199,20 +211,27 @@
       <list>
         <option value="$PROJECT_DIR$/src/Server.java" />
         <option value="$PROJECT_DIR$/src/HelloWorld.java" />
-        <option value="$PROJECT_DIR$/src/uploadFileTemp.java" />
         <option value="$PROJECT_DIR$/src/ServerOneWorking.java" />
-        <option value="$PROJECT_DIR$/src/ServerOneClient.java" />
         <option value="$PROJECT_DIR$/src/Working.java" />
-        <option value="$PROJECT_DIR$/src/Worker.java" />
-        <option value="$PROJECT_DIR$/src/ServerOneWorker.java" />
-        <option value="$PROJECT_DIR$/src/WorkerEnd.java" />
-        <option value="$PROJECT_DIR$/src/UserEnd.java" />
         <option value="$PROJECT_DIR$/src/ServerEnd.java" />
-        <option value="$PROJECT_DIR$/src/DefaultKeys.java" />
-        <option value="$PROJECT_DIR$/src/Cloud.java" />
-        <option value="$PROJECT_DIR$/src/MasterEnd.java" />
         <option value="$PROJECT_DIR$/src/WorkerAPMonitor.java" />
+        <option value="$PROJECT_DIR$/src/Storage.java" />
+        <option value="$PROJECT_DIR$/src/ServerOneWorkerAPMonitor.java" />
+        <option value="$PROJECT_DIR$/src/ServerOneSecretaryAPMonitor.java" />
+        <option value="$PROJECT_DIR$/src/WorkerEndAdapter.java" />
         <option value="$PROJECT_DIR$/src/ClientAPMonitor.java" />
+        <option value="$PROJECT_DIR$/src/uploadFileTemp.java" />
+        <option value="$PROJECT_DIR$/src/Cloud.java" />
+        <option value="$PROJECT_DIR$/src/ServerOneWorker.java" />
+        <option value="$PROJECT_DIR$/src/UserEnd.java" />
+        <option value="$PROJECT_DIR$/src/WorkerEnd.java" />
+        <option value="$PROJECT_DIR$/src/Job.java" />
+        <option value="$PROJECT_DIR$/src/DefaultKeys.java" />
+        <option value="$PROJECT_DIR$/src/Worker.java" />
+        <option value="$PROJECT_DIR$/src/MasterEnd.java" />
+        <option value="$PROJECT_DIR$/src/ServerOneClient.java" />
+        <option value="$PROJECT_DIR$/src/ServerOneSecretary.java" />
+        <option value="$PROJECT_DIR$/src/Secretary.java" />
       </list>
     </option>
   </component>
@@ -222,11 +241,11 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="35" />
-    <option name="y" value="7" />
-    <option name="width" value="1939" />
-    <option name="height" value="1039" />
+  <component name="ProjectFrameBounds" extendedState="1">
+    <option name="x" value="-53" />
+    <option name="y" value="205" />
+    <option name="width" value="1940" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -253,6 +272,18 @@
               <item name="PaaS" type="b2602c69:ProjectViewProjectNode" />
               <item name="PaaS" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PaaS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PaaS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="MasterEnd.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </path>
+            <path>
+              <item name="PaaS" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PaaS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="UserEnd.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </path>
           </expand>
           <select />
@@ -297,13 +328,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerEnd" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ServerEnd" />
-      <module name="PaaS" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserEnd" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="UserEnd" />
       <module name="PaaS" />
@@ -318,13 +342,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="uploadFileTemp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="uploadFileTemp" />
+      <module name="PaaS" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MasterEnd" />
         <item itemvalue="Application.UserEnd" />
-        <item itemvalue="Application.Cloud" />
-        <item itemvalue="Application.ServerEnd" />
+        <item itemvalue="Application.MasterEnd" />
         <item itemvalue="Application.WorkerEnd" />
+        <item itemvalue="Application.Cloud" />
+        <item itemvalue="Application.uploadFileTemp" />
       </list>
     </recent_temporary>
   </component>
@@ -342,11 +373,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-18" y="0" width="1552" height="832" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.700611" visible="true" weight="0.20738254" />
-      <window_info id="Structure" order="1" sideWeight="0.299389" side_tool="true" visible="true" weight="0.20738254" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.73996174" visible="true" weight="0.21849866" />
+      <window_info id="Structure" order="1" sideWeight="0.2605364" side_tool="true" weight="0.21849866" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
@@ -354,17 +385,17 @@
       <window_info id="Favorites" order="6" sideWeight="0.31316727" side_tool="true" weight="0.23288591" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3186969" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3045326" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.07714286" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.42060086" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.34844193" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.34571427" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24966443" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Maven" order="4" />
@@ -372,6 +403,38 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.73996174" visible="true" weight="0.21849866" />
+      <window_info id="Structure" order="1" sideWeight="0.2605364" side_tool="true" visible="true" weight="0.21849866" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" sideWeight="0.31316727" side_tool="true" weight="0.23288591" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3186969" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.25285715" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.34571427" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.24966443" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Maven" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+    </layout-to-restore>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Server.java" />
@@ -380,113 +443,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Working.java" />
     <entry file="file://$PROJECT_DIR$/src/ServerOneWorking.java" />
-    <entry file="file://$PROJECT_DIR$/src/Worker.java" />
-    <entry file="file://$PROJECT_DIR$/src/uploadFileTemp.java">
+    <entry file="file://$PROJECT_DIR$/src/HelloWorld.java" />
+    <entry file="file://$PROJECT_DIR$/src/ServerEnd.java" />
+    <entry file="file://$PROJECT_DIR$/src/WorkerAPMonitor.java" />
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/net/PlainSocketImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2090">
-          <caret line="117" column="39" selection-start-line="117" selection-start-column="39" selection-end-line="117" selection-end-column="39" />
+        <state relative-caret-position="119">
+          <caret line="131" selection-start-line="131" selection-end-line="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Storage.java" />
+    <entry file="file://$PROJECT_DIR$/src/ServerOneWorkerAPMonitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="24" column="49" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/HelloWorld.java">
+    <entry file="file://$PROJECT_DIR$/src/ServerOneSecretaryAPMonitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerOneWorker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerEnd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="24" lean-forward="true" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DefaultKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="48" column="63" selection-start-line="48" selection-start-column="63" selection-end-line="48" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ServerOneClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
-          <folding>
-            <element signature="method#sendInquiryMessageToClient#0;class#ServerOneClient#0" />
-            <element signature="method#sendParameterMessageToClient#0;class#ServerOneClient#0" />
-            <element signature="method#sendDisplayMessageToClient#0;class#ServerOneClient#0" />
-            <element signature="method#sendUploadFilePermitMessageToClient#0;class#ServerOneClient#0" />
-            <element signature="method#receiveClientReplyParameter#0;class#ServerOneClient#0" />
-            <element signature="method#generateJobID#0;class#ServerOneClient#0" />
-            <element signature="method#closeConnection#0;class#ServerOneClient#0" />
-            <element signature="method#startANewJob#0;class#ServerOneClient#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UserEnd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="275" column="38" selection-start-line="275" selection-start-column="38" selection-end-line="275" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#receiveAndPrintMessageFromServer#0;class#User#0" />
-            <element signature="method#receiveParameterMessageFromServer#0;class#User#0" />
-            <element signature="method#handleDataFromServerAndMakeRespond#0;class#User#0" />
-            <element signature="method#uploadFile#0;class#User#0" />
-            <element signature="method#downloadFile#0;class#User#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/WorkerEnd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Cloud.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="61" lean-forward="true" selection-start-line="61" selection-end-line="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2307#2308#0" expanded="true" />
-            <element signature="e#2392#2393#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MasterEnd.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/WorkerAPMonitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="23" lean-forward="true" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        <state relative-caret-position="228">
+          <caret line="24" column="50" selection-start-line="24" selection-start-column="50" selection-end-line="24" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -495,8 +476,148 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientAPMonitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="30" column="5" lean-forward="true" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+        <state relative-caret-position="580">
+          <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/uploadFileTemp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="100" column="42" lean-forward="true" selection-start-line="100" selection-start-column="42" selection-end-line="100" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Cloud.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1276">
+          <caret line="85" column="45" selection-start-line="85" selection-start-column="45" selection-end-line="85" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3158#3159#0" expanded="true" />
+            <element signature="e#3243#3244#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DefaultKeys.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="34" column="52" selection-start-line="34" selection-start-column="52" selection-end-line="34" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Job.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/WorkerEnd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-100">
+          <caret line="11" column="37" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MasterEnd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="61">
+          <caret line="66" column="54" selection-start-line="66" selection-start-column="54" selection-end-line="66" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#455#475#0" expanded="true" />
+            <element signature="e#566#586#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/WorkerEndAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerOneWorker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="74" column="19" selection-start-line="74" selection-start-column="19" selection-end-line="74" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerOneClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="150" column="13" selection-start-line="150" selection-start-column="13" selection-end-line="150" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#sendInquiryMessageToClient#0;class#ServerOneClient#0" />
+            <element signature="method#sendParameterMessageToClient#0;class#ServerOneClient#0" />
+            <element signature="method#sendDisplayMessageToClient#0;class#ServerOneClient#0" />
+            <element signature="method#sendUploadFilePermitMessageToClient#0;class#ServerOneClient#0" />
+            <element signature="method#receiveClientReplyParameter#0;class#ServerOneClient#0" />
+            <element signature="method#generateJobID#0;class#ServerOneClient#0" />
+            <element signature="method#closeConnection#0;class#ServerOneClient#0" />
+            <element signature="method#checkJobState#0;class#ServerOneClient#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Worker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="86" column="32" selection-start-line="86" selection-start-column="32" selection-end-line="86" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UserEnd.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#receiveParameterMessageFromServer#0;class#User#0" />
+            <element signature="method#uploadFile#0;class#User#0" />
+            <element signature="method#downloadFile#0;class#User#0" />
+            <element signature="method#User#0;class#User#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ServerOneSecretary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="138" column="1" lean-forward="true" selection-start-line="138" selection-start-column="1" selection-end-line="138" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Secretary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="83" column="68" lean-forward="true" selection-start-line="83" selection-start-column="68" selection-end-line="83" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

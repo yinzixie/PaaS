@@ -11,19 +11,6 @@ import org.openstack4j.model.compute.ServerCreate;
 import org.openstack4j.model.image.Image;
 import org.openstack4j.openstack.OSFactory;
 
-class Job {
-    public String ID = "id";
-    public String time = "12:00";
-    public String appFile = "appFile";
-    public String state = "Initializing";
-}
-
-class Storage {
-    public ReentrantLock mLock = new ReentrantLock();
-    public static HashMap jobList = new HashMap();
-    public static HashMap workerList = new HashMap();
-}
-
 public class Cloud {
     OSClientV3 masterOS=null;
     OSClientV3 worker1OS=null;
@@ -35,19 +22,31 @@ public class Cloud {
     public Cloud() {
         masterOS = OSFactory.builderV3()
                 .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
-                .credentials("yinzix@utas.edu.au", "YzI0Y2Y4NTMyNmI1NWYz",Identifier.byName("Default"))
+                .credentials("yinzix@utas.edu.au", "NDAxMjQxNzMyODAwNWI2",Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId("72a0388a8ea44bdeb096e05edc6974f8"))
+                .authenticate();
+
+       /* worker1OS = OSFactory.builderV3()
+                .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
+                .credentials("yypeng@utas.edu.au", "Y2ZmYzE5Y2JjMWMwZjZk",Identifier.byName("Default"))
+                .scopeToProject(Identifier.byId("f4c9952b6d7843bcbc6c183a6617b150"))
+                .authenticate();
+
+        worker2OS = OSFactory.builderV3()
+                .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
+                .credentials("jliu@utas.edu.au", "Y2U3ZWY4ZDRiYzlhNjkw",Identifier.byName("Default"))
+                .scopeToProject(Identifier.byId("7390768c1e5f44ddbc81961068ca91bf"))
                 .authenticate();
 
         standbyWorkerOS = OSFactory.builderV3()
                 .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
                 .credentials("yuhangy@utas.edu.au", "ZTQ1NjdhMDgxOWIwMTc3",Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId("9febfc289d494d55a7509c084e446a5e"))
-                .authenticate();
+                .authenticate();*/
 
 
-        servers = masterOS.compute().servers().list();
-        servers.addAll(standbyWorkerOS.compute().servers().list());
+        //servers = masterOS.compute().servers().list();
+        //servers.addAll(standbyWorkerOS.compute().servers().list());
 
         //System.out.println(servers);
     }

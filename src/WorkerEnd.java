@@ -3,16 +3,24 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
-//doing main job and report job state
-
+class WorkBook {
+    public ReentrantLock workBookLock = new ReentrantLock();
+    public Queue<Job> jobQueue = new LinkedList<Job>();
+    public Queue<Job> cancelQueue = new LinkedList<Job>();
+    public Queue<Job> jobStateQueue = new LinkedList<Job>();
+    public Process currentProcess;
+    public Job currentJob;
+}
 
 public class WorkerEnd {
     public int ID;
 
-    public  boolean isBusy;
+    public boolean isBusy;
 
     private Socket socket;
     private BufferedReader in;
@@ -21,35 +29,29 @@ public class WorkerEnd {
     private boolean keepConnection = true;
 
     public static void main(String[] args) {
-        int id = 0;
+
+        WorkBook workBook = new WorkBook();
+
+        //Start ServerOneWorker AP Monitor
         try {
-            ServerSocket s = new ServerSocket(DefaultKeys.workerPort);
-            System.out.println("Worker End Started");
-            try {
-                while (true) {
-                    // Blocks until a connection occurs:
-                    Socket socket = s.accept();
-                    System.out.println("Connection accepted: " + socket);
-                    try {
-                        //new Worker(socket);
-                    } catch (Exception e) {
-                        // If it fails, close the socket,
-                        // otherwise the thread will close it:
-                        System.out.println("Can't start Worker End!\nDetails: ");
-                        e.toString();
-                        socket.close();
-                    }
-                }
-            } catch (IOException e) {
-                System.out.println("Error Details: ");
-                e.toString();
-            } finally {
-                s.close();
-            }
-        }catch (IOException e) {
-            System.out.println("Worker End Failed to start!");
-            System.out.println("Error Details: ");
-            e.toString();
+            ServerOneWorkerAPMonitor workerAPM = new ServerOneWorkerAPMonitor(workBook);
+        } catch (Exception e) {
+            System.out.println("Failed to start ServerOneWorker AP Monitor");
+            e.printStackTrace();
+            System.exit(0);
+        }
+
+        //Start ServerOneSecretary AP Monitor
+        try {
+            ServerOneSecretaryAPMonitor secretaryAPM = new ServerOneSecretaryAPMonitor(workBook);
+        } catch (Exception e) {
+            System.out.println("Failed to start ServerOneSecretary AP Monitor");
+            e.printStackTrace();
+            System.exit(0);
+        }
+
+        while (true) {
+
         }
     }
 }

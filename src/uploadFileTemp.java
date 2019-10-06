@@ -91,7 +91,9 @@ public class uploadFileTemp {
         String worker1 = "144.6.227.83";
         String workerTommy = "115.146.84.200";
         String workerLiujin = "144.6.227.83";
-
+        String src6 = "app.py"; // 本地文件名
+        String dst6 = "/home/ubuntu/app.py";//"/home/ubuntu/Input/test.txt"; // 目标文件名
+        uploadFile(src6,dst6,worker1);
        /* String src6 = "out\\production\\PaaS\\Worker.class"; // 本地文件名
         String dst6 = "/home/ubuntu/PaaS/Worker.class";//"/home/ubuntu/Input/test.txt"; // 目标文件名
         uploadFile(src6,dst6,worker1);*/
@@ -116,6 +118,6 @@ public class uploadFileTemp {
         String src5 = "out\\production\\PaaS\\ServerOneClient.class"; // 本地文件名
         String dst5 = "/home/ubuntu/PaaS/ServerOneClient.class";//"/home/ubuntu/Input/test.txt"; // 目标文件名
         uploadFile(src5,dst5,master);*/
-        runCommand();
+        //runCommand();
     }
 }

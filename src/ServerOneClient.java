@@ -11,8 +11,6 @@ class ServerOneClient extends Thread{
 
     private boolean keepConnection = true;
 
-    private static ReentrantLock lock = new ReentrantLock();
-
     private void sendInquiryMessageToClient(PrintWriter out, String inquiry) {
         out.println(DefaultKeys.INQUIRY_MESSAGE_FLAG);
         out.println(inquiry);
@@ -43,7 +41,7 @@ class ServerOneClient extends Thread{
             System.out.println("Received message from client: " + socket + " : " + resp);
         } catch (IOException e) {
             System.out.println("Can't receive message from client!\nError Details: ");
-            e.toString();
+            e.printStackTrace();
         }
         return resp;
     }
@@ -72,57 +70,45 @@ class ServerOneClient extends Thread{
         }
     }
 
-    private  void startANewJob(String[] parameters) {
+    private void startANewJob(String[] parameters) {
         if(parameters.length != 4) {
             sendDisplayMessageToClient(out, "Missing parameters!");
         }else{
-            String inputFile = parameters[1];
-            String remotePath = parameters[2];
+            String appFile = parameters[1];
+            String inputFile = parameters[2];
             String time = parameters[3];
 
-            String appType = inputFile.substring(inputFile.lastIndexOf(".") + 1);
+            String appType = appFile.substring(appFile.lastIndexOf(".") + 1);
 
-            String command = remotePath + " " + inputFile;
             //check type
             if(appType.equalsIgnoreCase("jar") || appType.equalsIgnoreCase("py")) {
-                sendUploadFilePermitMessageToClient(out,inputFile + " " + remotePath );
+                //check files
+                File appfile = new File(appFile);
+                File inputfile = new File(inputFile);
 
-                //receive files
-                if(receiveClientReplyParameter(in).equalsIgnoreCase(DefaultKeys.END_UPLOAD_FILE_SUCCEED)) {
-                    //generate passcode = id
-                    String passcode;
-                    do {
-                        passcode = generateJobID();
-                    }while( Storage.jobList.get(passcode)!=null);
+                if (!appfile.exists()) {
+                    sendDisplayMessageToClient(out, "App doesn't exist!");
+                }else {
+                    if (!inputfile.exists()) {
+                        sendDisplayMessageToClient(out, "Input file doesn't exist!");
+                    }else {
+                        //generate passcode = id
+                        String passcode;
+                        do {
+                            passcode = generateJobID();
+                        }while(Storage.jobList.get(passcode)!=null);
 
-                    Job newJob = new Job();
-                    newJob.ID = passcode;
-                    newJob.appFile = remotePath;
-                    newJob.time = time;
+                        Job newJob = new Job(passcode, appFile, inputFile,time);
 
-                    //save job
-                    lock.lock();
-                    Storage.jobList.put(passcode, newJob);
-                    lock.unlock();
+                        //save job
+                        Storage.jLock.lock();
+                        Storage.jobList.put(passcode, newJob);
+                        Storage.jobQueue.offer(newJob);
+                        Storage.jLock.unlock();
 
-                    //send message to client
-                    sendDisplayMessageToClient(out, "Your Job Passcode:" + passcode);
-
-                    //assign job
-
-                    try {
-                        InetAddress addr = InetAddress.getByName(DefaultKeys.masterIP);
-                        new ServerOneWorker(addr, DefaultKeys.workerPort, command);
-                    }catch(Exception e) {
-                        System.out.println("Can't get worker address!\nError Details: ");
-                        e.printStackTrace();
-
-                        //re assignment
-
-
-
+                        //send message to client
+                        sendDisplayMessageToClient(out, "Your Job Passcode:" + passcode);
                     }
-
                 }
             }else {
                 sendDisplayMessageToClient(out, "Nonsupport application type!");
@@ -130,13 +116,49 @@ class ServerOneClient extends Thread{
         }
     }
 
-    public ServerOneClient(Socket s) throws IOException {
-        socket = s;
+    private void checkJobState(String id) {
+        Job job = Storage.jobList.get(id);
+        if(job != null) {
+            sendDisplayMessageToClient(out, job.state);
+        }else {
+            sendDisplayMessageToClient(out,"Wrong Job ID!");
+        }
+    }
 
+    private void cancelJob(String id) {
+        Job job = Storage.jobList.get(id);
+        if(job != null) {
+            switch (job.state) {
+                case DefaultKeys.jobSucceed:
+                    sendDisplayMessageToClient(out, "Job already finished!");
+                    break;
+                case DefaultKeys.jobCanceled:
+                    sendDisplayMessageToClient(out, "Job already canceled!");
+                    break;
+                default:
+                    if(job.secretaryForWorker == null) {
+                        Storage.jLock.lock();
+                        Storage.jobQueue.remove(job);
+                        Storage.jobList.get(job.ID).state = DefaultKeys.jobCanceled;
+                        Storage.jLock.unlock();
+                        sendDisplayMessageToClient(out, "Job canceled!");
+                    }else {
+                        job.secretaryForWorker.jLock.lock();
+                        job.secretaryForWorker.cancelQueue.offer(job);
+                        job.secretaryForWorker.jLock.unlock();
+                        sendDisplayMessageToClient(out, "Job canceling... use check method to confirm!");
+                    }
+            }
+        }else {
+            sendDisplayMessageToClient(out,"Wrong Job ID!");
+        }
+    }
+
+    ServerOneClient(Socket s) throws IOException {
+        socket = s;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         // Enable auto-flush:
         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-
         start();
     }
 
@@ -154,10 +176,31 @@ class ServerOneClient extends Thread{
                 String[] arrayStr = optionStr.split(" ");
                 String firstStr = arrayStr[0];
                 // option
-                if (firstStr.toUpperCase().equals(DefaultKeys.startOption)) {
-                    startANewJob(arrayStr);
+                switch (firstStr.toUpperCase()) {
+                    case DefaultKeys.startOption:
+                        startANewJob(arrayStr);
+                        break;
+                    case DefaultKeys.checkOption:
+                        if(arrayStr.length != 2) {
+                            sendDisplayMessageToClient(out, "Missing parameters!");
+                        }else {
+                            checkJobState(arrayStr[1]);
+                        }
+                        break;
+                    case DefaultKeys.cancelOption:
+                        if(arrayStr.length != 2) {
+                            sendDisplayMessageToClient(out, "Missing parameters!");
+                        }else {
+                            cancelJob(arrayStr[1]);
+                        }
+                        break;
+                    default:
+                        sendDisplayMessageToClient(out, DefaultKeys.wrongOptionMessage);
+                }
+                /*if (firstStr.toUpperCase().equals(DefaultKeys.startOption)) {
+
                 }else if (firstStr.toUpperCase().equals(DefaultKeys.checkOption)) {
-                    sendDisplayMessageToClient(out, "check ....asd");
+
 
                 }else if (firstStr.toUpperCase().equals(DefaultKeys.cancleOption)) {
                     sendDisplayMessageToClient(out, "cancle ....asd");
@@ -166,8 +209,8 @@ class ServerOneClient extends Thread{
                     sendDisplayMessageToClient(out, "receive ....asd");
                 }else {
                     sendDisplayMessageToClient(out, DefaultKeys.wrongOptionMessage);
-                }
-                sendInquiryMessageToClient(out, "Press enter to continue...");
+                }*/
+                sendInquiryMessageToClient(out, DefaultKeys.pressEnterToContinueMessage);
                 receiveClientReplyParameter(in);
             }
 

@@ -32,15 +32,16 @@ class User extends Thread{
     private Boolean keepConnection = true;
 
     //receive and print message from server
-    private void receiveAndPrintMessageFromServer(BufferedReader in) {
-        String resp = null;
+    private String receiveAndPrintMessageFromServer(BufferedReader in) {
+        String temp = "";
         while (true) {
             try {
-                resp = in.readLine();
+                String resp = in.readLine();
                 if(resp.equals(DefaultKeys.MESSAGE_END_FLAG)) {
                     break;
                 }
                 else {
+                    temp = resp;
                     System.out.println(resp);
             }
             } catch (IOException e) {
@@ -48,6 +49,7 @@ class User extends Thread{
                 e.printStackTrace();
             }
         }
+        return temp;
     }
 
     //receive parameter from server
@@ -88,14 +90,15 @@ class User extends Thread{
 
         //inquiry message
         else if(resp_type.equals(DefaultKeys.INQUIRY_MESSAGE_FLAG)) {
-            receiveAndPrintMessageFromServer(in);
+            String temp = receiveAndPrintMessageFromServer(in);
 
             //send reply message to server
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Send to Server:");
-            String input = scanner.nextLine();
-
-            out.println(input);
+            if(!temp.equals(DefaultKeys.pressEnterToContinueMessage)) {
+                System.out.println("Send to Server:");
+            }
+                Scanner scanner = new Scanner(System.in);
+                String input = scanner.nextLine();
+                out.println(input);
 
             if(input.toUpperCase().equals(DefaultKeys.CLOSE_CLIENT_FLAG)){
                 keepConnection = false;
@@ -229,13 +232,13 @@ class User extends Thread{
             long endTime =  System.currentTimeMillis();
             long usedTime = (endTime-startTime);/*second*/
             System.out.println("Connnection time: " + usedTime + " ms");
+            start();
         }
-        catch (IOException e) {
+        catch (Exception e) {
             // If the creation of the socket fails,
             // nothing needs to be cleaned up.
             System.out.println("Can't connect to server!\nError Details: " + e.toString());
         }
-        start();
     }
 
     public void run() {
@@ -250,7 +253,7 @@ class User extends Thread{
                 String resp = handleDataFromServerAndMakeRespond(in,out);
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Error Details: ");
             e.printStackTrace();
         } finally {
@@ -259,7 +262,7 @@ class User extends Thread{
                 if(socket != null) {
                     socket.close();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.println("Can't close client socket!\nError Details: ");
                 e.printStackTrace();
             }
