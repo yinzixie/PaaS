@@ -1,9 +1,7 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Worker extends Thread{
@@ -21,9 +19,9 @@ public class Worker extends Thread{
 
 
     public void startJob(Job job) throws Exception {
-        String command;
         String cmd;
         String appName;
+
         if(job.appType == "jar") {
             cmd = "java -jar";
             appName = "app.jar";
@@ -32,41 +30,77 @@ public class Worker extends Thread{
             appName = "app.py";
         }
 
-        File dir = new File(job.ID);
+        File dir = new File(DefaultKeys.workDir + job.ID);
         dir.mkdir();
 
-        String appFilePath = appName;//dir + "/" + appName;
-        String inputFilePath = "input.txt";//dir + "/" + "input.txt";
+        String appFilePath = dir + "/" + appName;
+        String inputFilePath = dir + "/" + "input.txt";
 
-        //copy
+        //Download files
+        System.out.println("Downloading files for job: " + job.ID);
 
-        List<String> cmdList = Arrays.asList(cmd, appFilePath, inputFilePath);
-        System.out.println(cmdList);
-        System.out.println("Creating Process");
+        List<String> remoteSrcs = new ArrayList<String>();
+        List<String> localDsts = new ArrayList<String>();
 
-        ProcessBuilder builder = new ProcessBuilder(cmdList);
+        remoteSrcs.add(job.appFile);
+        localDsts.add(appFilePath);
 
-        builder.redirectErrorStream(true);// 重定向错误输出流到正常输出流
+        remoteSrcs.add(job.inputFile);
+        localDsts.add(inputFilePath);
 
-        //builder.directory(dir);
-        sendJobStateToMaster(out, job, "In Execution");
-        workBook.currentProcess = builder.start();
-        workBook.currentJob = job;
+        if(FileIO.downloadFile(DefaultKeys.masterIP, DefaultKeys.privateKey, remoteSrcs, localDsts)) {
+            List<String> cmdList = Arrays.asList(cmd, appFilePath, inputFilePath);
+            System.out.println(cmdList);
+            System.out.println("Creating Process");
 
-        InputStream is = workBook.currentProcess.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            ProcessBuilder builder = new ProcessBuilder(cmdList);
 
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
+            builder.redirectErrorStream(true);// 重定向错误输出流到正常输出流
+
+            //builder.directory(dir);
+            sendJobStateToMaster(out, job, "In Execution");
+            workBook.currentProcess = builder.start();
+            workBook.currentJob = job;
+
+            InputStream is = workBook.currentProcess.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+            workBook.currentProcess.waitFor();
+
+            //upload file
+            System.out.println("Uploading files for job: " + job.ID);
+
+            remoteSrcs = new ArrayList<String>();
+            localDsts = new ArrayList<String>();
+
+            remoteSrcs.add(inputFilePath);
+            localDsts.add(inputFilePath);
+
+            if(FileIO.downloadFile(DefaultKeys.masterIP, DefaultKeys.privateKey, remoteSrcs, localDsts)) {
+                sendJobStateToMaster(out, job, DefaultKeys.jobSucceed);
+            }else {
+                sendJobStateToMaster(out, job, DefaultKeys.jobFailed);
+            }
+        }else {
+            sendJobStateToMaster(out, job, DefaultKeys.jobFailed);
         }
-        workBook.currentProcess.waitFor();
-        sendJobStateToMaster(out, job, DefaultKeys.jobSucceed);
     }
 
-    public Worker(Socket s, WorkBook book) throws IOException {
-        socket = s;
+    public Worker(InetAddress addr, int port, WorkBook book) throws Exception {
+        System.out.println("Starting Worker...");
         workBook = book;
+        /*get current system time*/
+        long startTime =  System.currentTimeMillis();
+        //start socket
+        socket = new Socket(addr, port);
+        long endTime =  System.currentTimeMillis();
+        long usedTime = (endTime-startTime);/*second*/
+        System.out.println("Connection time: " + usedTime + " ms");
+
         // Enable auto-flush:
         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         start();

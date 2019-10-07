@@ -1,3 +1,5 @@
+import org.openstack4j.model.compute.Server;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -20,9 +22,26 @@ class ServerOneSecretary extends Thread {
     Queue<Job> jobQueue = new LinkedList<Job>();
     Queue<Job> cancelQueue = new LinkedList<Job>();
 
+    ServerOneWorker worker;
     boolean queryWorkerHealthy = false;
 
     public void closeConnection(){
+        Storage.wLock.lock();
+        Storage.workerEndList.remove(socket.getInetAddress().getHostAddress().toString());
+        Storage.wLock.unlock();
+
+        if(this.jobList.size() > 0) {
+            for(Job job:this.jobList){
+                if(Storage.jobList.get(job.ID).state != DefaultKeys.jobSucceed || Storage.jobList.get(job.ID).state != DefaultKeys.jobCanceled) {
+                    job.state = "Re Assigning...";
+                    Storage.jLock.lock();
+                    Storage.jobQueue.offer(job);
+                    Storage.jLock.unlock();
+                }
+            }
+        }
+        System.out.println("All jobs have been transferred");
+
         keepConnection = false;
         try {
             if(socket != null) {
@@ -48,17 +67,26 @@ class ServerOneSecretary extends Thread {
         return resp;
     }*/
 
-    public void getWorkerStateFromSecretary(BufferedReader in, PrintWriter out) throws IOException {
+    private void getWorkerStateFromSecretary(BufferedReader in, PrintWriter out) throws IOException {
         out.println(DefaultKeys.GET_WORKER_STATE_FLAG);
-        while (true) {
-            String resp = in.readLine();
-            if(resp.equals(DefaultKeys.MESSAGE_END_FLAG)) {
-                break;
-            }
-            else {
-                System.out.println(resp);
-            }
-        }
+
+        String start = in.readLine();
+        String cpu = in.readLine();
+        String memory = in.readLine();
+        String active = in.readLine();
+        String requests = in.readLine();
+        String end = in.readLine();
+
+        Storage.wLock.lock();
+        WorkerEndAdapter workerEnd = Storage.workerEndList.get(socket.getInetAddress().getHostAddress().toString());
+        workerEnd.CPU = Integer.valueOf(cpu);
+        workerEnd.memory = Integer.valueOf(memory);
+        workerEnd.active = active;
+        workerEnd.requests = Integer.valueOf(requests);
+        workerEnd.isBusy = workerEnd.requests > DefaultKeys.workerBusyThreshold;
+        Storage.wLock.unlock();
+
+        workerEnd.print();
     }
 
     public void cancelJobToSecretary(PrintWriter out, Job job) {
@@ -66,31 +94,19 @@ class ServerOneSecretary extends Thread {
         out.println(job.ID);
     }
 
-    public ServerOneSecretary(InetAddress ad, int port) throws Exception {
-        addr = ad;
-        System.out.println("Start Server One Secretary: " + addr);
-        /*get current system time*/
-        long startTime =  System.currentTimeMillis();
-        //start socket
-
-        socket = new Socket(addr, port);
-        long endTime =  System.currentTimeMillis();
-        long usedTime = (endTime-startTime);/*second*/
-        System.out.println("Server One Secretary Connection time: " + usedTime + " ms");
-
+    public ServerOneSecretary(Socket s) throws Exception {
+        socket = s;
+        System.out.println("Start Server One Secretary: " + socket);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Output is automatically flushed by PrintWriter:
+        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
         start();
     }
 
     public void run() {
-        int period = 5;
+        int period = 20;
         int sec = 0;
         try {
-            System.out.println("socket = " + socket);
-
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            // Output is automatically flushed by PrintWriter:
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
-
             while (keepConnection) {
                 try {
                     TimeUnit.SECONDS.sleep(1);
@@ -133,7 +149,7 @@ class ServerOneSecretary extends Thread {
             e.printStackTrace();
         } finally {
             System.out.println("Close Server One Secretary: " + addr);
-            closeConnection();
+            this.closeConnection();
         }
     }
 }

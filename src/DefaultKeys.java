@@ -56,9 +56,14 @@ public class DefaultKeys {
     public static final Integer workerPort = 8082; //for worker
     public static final Integer secretaryPort = 8083; //for worker's secretary
 
+    public static final Integer workerBusyThreshold = 2;
 
-    public static final String masterIP = "localhost";//"144.6.227.102";
+    public static final String workDir = "/home/ubuntu/PaaS/WorkDir/";
+
+    public static final String privateKey = "/home/ubuntu/PaaS/key.pem";
+
+    public static final String masterIP = "144.6.227.102";//"localhost";//"";
     public static final String worker1IP = "144.6.227.83";
-    public static final String worker2IP = "115.146.85.205";
+    public static final String worker2IP = "144.6.227.90";//tommy
     public static final String worker3IP = "115.146.84.200";
 }

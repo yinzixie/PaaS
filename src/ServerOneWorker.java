@@ -6,7 +6,6 @@ import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
 class ServerOneWorker extends Thread {
-    InetAddress addr;
     Socket socket;
     BufferedReader in;
     PrintWriter out;
@@ -20,6 +19,13 @@ class ServerOneWorker extends Thread {
         Storage.jLock.lock();
         Storage.jobList.get(id).state = state;
         Storage.jLock.unlock();
+
+        if(state.equals(DefaultKeys.jobFailed)) {
+            //re assign job
+            Storage.jLock.lock();
+            Storage.jobQueue.offer(Storage.jobList.get(id));
+            Storage.jLock.unlock();
+        }
     }
 
     public void closeConnection(){
@@ -43,29 +49,17 @@ class ServerOneWorker extends Thread {
         return resp;
     }
 
-    ServerOneWorker(InetAddress ad, int port) throws Exception {
-        addr = ad;
-        System.out.println("Start Server One Worker: " + addr);
-        /*get current system time*/
-        long startTime =  System.currentTimeMillis();
-        //start socket
-
-        socket = new Socket(addr, port);
-        long endTime =  System.currentTimeMillis();
-        long usedTime = (endTime-startTime);/*second*/
-        System.out.println("Server One Worker Connection time: " + usedTime + " ms");
-
+    ServerOneWorker(Socket s) throws Exception {
+        socket = s;
+        System.out.println("Start Server One Worker: " + socket);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Output is automatically flushed by PrintWriter:
+        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
         start();
     }
 
     public void run() {
         try {
-            System.out.println("socket = " + socket);
-
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            // Output is automatically flushed by PrintWriter:
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
-
             while (keepConnection) {
                 String resp = handleDataFromWorker(in,out);
             }
@@ -73,7 +67,7 @@ class ServerOneWorker extends Thread {
             System.out.println("Error Details: ");
             e.printStackTrace();
         } finally {
-            System.out.println("closing Server One Worker: " + addr);
+            System.out.println("closing Server One Worker: " + socket);
             closeConnection();
         }
     }

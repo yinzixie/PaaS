@@ -77,7 +77,6 @@ public class Cloud {
     }
     //List of all Servers
     public void ListServers(OSClientV3 os) {
-
         List<? extends Server> servers = os.compute().servers().list();
         System.out.println(servers);
     }

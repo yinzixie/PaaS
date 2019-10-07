@@ -19,7 +19,7 @@ output_file = "qwe"
 for i in range(0,50):
     time.sleep(1)
     output_file += str(i)
-    print(output_file)
-    #print output_file
+    #print(output_file)
+    print output_file
 with open(output_filename, mode='w+') as file:
     file.write(output_file)

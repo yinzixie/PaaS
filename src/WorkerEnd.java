@@ -23,35 +23,19 @@ public class WorkerEnd {
     public boolean isBusy;
 
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
 
     private boolean keepConnection = true;
 
     public static void main(String[] args) {
-
         WorkBook workBook = new WorkBook();
 
-        //Start ServerOneWorker AP Monitor
         try {
-            ServerOneWorkerAPMonitor workerAPM = new ServerOneWorkerAPMonitor(workBook);
-        } catch (Exception e) {
-            System.out.println("Failed to start ServerOneWorker AP Monitor");
+            InetAddress addr = InetAddress.getByName(DefaultKeys.masterIP);
+            new Worker(addr, DefaultKeys.workerPort, workBook);
+            new Secretary(addr, DefaultKeys.secretaryPort, workBook);
+        }catch(Exception e) {
+            System.out.println("Can't start Worker End!\nError Details: ");
             e.printStackTrace();
-            System.exit(0);
-        }
-
-        //Start ServerOneSecretary AP Monitor
-        try {
-            ServerOneSecretaryAPMonitor secretaryAPM = new ServerOneSecretaryAPMonitor(workBook);
-        } catch (Exception e) {
-            System.out.println("Failed to start ServerOneSecretary AP Monitor");
-            e.printStackTrace();
-            System.exit(0);
-        }
-
-        while (true) {
-
         }
     }
 }

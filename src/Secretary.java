@@ -1,6 +1,8 @@
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
+
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Secretary extends Thread{
@@ -13,19 +15,17 @@ public class Secretary extends Thread{
 
     private static OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-    public static int cpuLoad() {
+    private static int cpuLoad() {
         double cpuLoad = osmxb.getSystemCpuLoad();
-        int percentCpuLoad = (int) (cpuLoad * 100);
-        return percentCpuLoad;
+        return (int) (cpuLoad * 100);
     }
 
-    public static int memoryLoad() {
+    private static int memoryLoad() {
         double totalvirtualMemory = osmxb.getTotalPhysicalMemorySize();
         double freePhysicalMemorySize = osmxb.getFreePhysicalMemorySize();
 
         double value = freePhysicalMemorySize/totalvirtualMemory;
-        int percentMemoryLoad = (int) ((1-value)*100);
-        return percentMemoryLoad;
+        return (int) ((1-value)*100);
     }
 
     private void sendWorkerStateToMaster(PrintWriter out, String state) {
@@ -46,9 +46,17 @@ public class Secretary extends Thread{
         }
     }
 
-    public Secretary(Socket s, WorkBook book) throws Exception {
+    Secretary(InetAddress addr, int port, WorkBook book) throws Exception {
+        System.out.println("Starting Secretary...");
         workBook = book;
-        socket = s;
+        /*get current system time*/
+        long startTime =  System.currentTimeMillis();
+        //start socket
+        socket = new Socket(addr, port);
+        long endTime =  System.currentTimeMillis();
+        long usedTime = (endTime-startTime);/*second*/
+        System.out.println("Connnection time: " + usedTime + " ms");
+
         // Enable auto-flush:
         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -67,6 +75,7 @@ public class Secretary extends Thread{
                     String time = in.readLine();
                     Job newJob = new Job(id, appFile, inputFile, time);
                     System.out.println("Received job");
+
                     workBook.workBookLock.lock();
                     workBook.jobQueue.offer(newJob);
                     workBook.workBookLock.unlock();
@@ -78,7 +87,7 @@ public class Secretary extends Thread{
                     }else {
                         active = "In Execution";
                     }
-                    String healthy = "CPU: " + String.valueOf(cpuLoad()) + "%\n" + "Memory: " + String.valueOf(memoryLoad()) + "%\n" + "Active: " + active + "\n" + "Requests in queue: " + String.valueOf(workBook.jobQueue.size());
+                    String healthy = String.valueOf(cpuLoad()) + "\n" + String.valueOf(memoryLoad()) + "\n" + active + "\n" + String.valueOf(workBook.jobQueue.size());
                     sendWorkerStateToMaster(out, healthy);
 
                 }else if(resp.equals(DefaultKeys.CANCLE_JOB_FLAG)) {
@@ -101,16 +110,6 @@ public class Secretary extends Thread{
                     }
                     System.out.println("Job Canceled: " + jobID);
                 }
-                /*else if(resp.equals(DefaultKeys.GET_JOB_STATE_FLAG)) {
-                    String jobID = in.readLine();
-                    try{
-                        workBook.job.exitValue();
-                        out.println();
-                    }catch(IllegalThreadStateException e){//进程没有终止
-                        out.println();
-                    }
-
-                }*/
             } catch (Exception e) {
                 System.out.println("Disconnect from Master\nError Details:");
                 e.printStackTrace();
