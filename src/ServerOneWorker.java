@@ -25,10 +25,34 @@ class ServerOneWorker extends Thread {
             Storage.jLock.lock();
             Storage.jobQueue.offer(Storage.jobList.get(id));
             Storage.jLock.unlock();
+        }else if(state.equals(DefaultKeys.jobSucceed)) {
+            Storage.jLock.lock();
+            Storage.jobList.get(id).FinishTime = DefaultKeys.getTime();
+            Storage.jLock.unlock();
+
+            //generate bill
+            String sourceString = "Job:" + id + "\n" + "Start time:" +  Storage.jobList.get(id).StartTime + "\n" + "Finished Time:" + Storage.jobList.get(id).FinishTime + "\n" + "Cost:50$";	//待写入字符串
+            byte[] sourceByte = sourceString.getBytes();
+
+            if(null != sourceByte){
+                try {
+                    File file = new File(DefaultKeys.workDir + id + "/" + DefaultKeys.billFileName);		//文件路径（路径+文件名）
+                    file.createNewFile();
+
+                    FileOutputStream outStream = new FileOutputStream(file);	//文件输出流用于将数据写入文件
+                    outStream.write(sourceByte);
+                    outStream.close();	//关闭文件输出流
+                    System.out.println("Succeed generate bill for job: " + id);
+                } catch (Exception e) {
+                    System.out.println("Failed generate bill for job: " + id);
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public void closeConnection(){
+        Storage.workerEndList.get(socket.getInetAddress().getHostAddress().toString()).secretary.keepConnection = false;
         keepConnection = false;
         try {
             if(socket != null) {

@@ -90,7 +90,7 @@ public class Secretary extends Thread{
                     String healthy = String.valueOf(cpuLoad()) + "\n" + String.valueOf(memoryLoad()) + "\n" + active + "\n" + String.valueOf(workBook.jobQueue.size());
                     sendWorkerStateToMaster(out, healthy);
 
-                }else if(resp.equals(DefaultKeys.CANCLE_JOB_FLAG)) {
+                }else if(resp.equals(DefaultKeys.CANCEL_JOB_FLAG)) {
                     String jobID = in.readLine();
                     if(workBook.currentJob.ID.equals(jobID)) {
                         workBook.workBookLock.lock();
@@ -115,6 +115,7 @@ public class Secretary extends Thread{
                 e.printStackTrace();
                 System.out.println("Close Secretary");
                 closeConnection();
+                System.exit(0);
             }
         }
     }

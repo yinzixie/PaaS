@@ -1,6 +1,8 @@
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -30,8 +32,16 @@ class ServerOneClient extends Thread{
     }
 
     private void sendUploadFilePermitMessageToClient(PrintWriter out,String parameters) {
-        out.println(DefaultKeys.UPLOAD_FILE_FLAG);
+        out.println(DefaultKeys.PERMIT_UPLOAD_FLAG);
         out.println(parameters);
+    }
+
+    private void sendDownloadFilePermitMessageToClient(PrintWriter out,List<String> parameters) {
+        out.println(DefaultKeys.PERMIT_DOWNLOAD_FLAG);
+        for (String filePath:parameters) {
+            out.println(filePath);
+        }
+        out.println(DefaultKeys.MESSAGE_END_FLAG);
     }
 
     private String receiveClientReplyParameter(BufferedReader in) {
@@ -71,7 +81,7 @@ class ServerOneClient extends Thread{
     }
 
     private void startANewJob(String[] parameters) {
-        if(parameters.length != 4) {
+        if(parameters.length < 4) {
             sendDisplayMessageToClient(out, "Missing parameters!");
         }else{
             String appFile = parameters[1];
@@ -154,6 +164,24 @@ class ServerOneClient extends Thread{
         }
     }
 
+    private void receiveJob(String id) {
+        Job job = Storage.jobList.get(id);
+        if(job != null) {
+            switch (job.state) {
+                case DefaultKeys.jobSucceed:
+                    List<String> filePaths = new ArrayList<String>();
+                    filePaths.add(DefaultKeys.workDir + job.ID + "/" + DefaultKeys.outputFileName);
+                    filePaths.add(DefaultKeys.workDir + job.ID + "/" + DefaultKeys.billFileName);
+                    sendDownloadFilePermitMessageToClient(out, filePaths);
+                    break;
+                default:
+                    sendDisplayMessageToClient(out,"Sorry, job in progress! Please wait patiently.");
+            }
+        }else {
+            sendDisplayMessageToClient(out,"Wrong Job ID!");
+        }
+    }
+
     ServerOneClient(Socket s) throws IOException {
         socket = s;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -178,7 +206,19 @@ class ServerOneClient extends Thread{
                 // option
                 switch (firstStr.toUpperCase()) {
                     case DefaultKeys.startOption:
-                        startANewJob(arrayStr);
+                        if(arrayStr.length >= 5) {
+                            try {
+                                int rep = Integer.valueOf(arrayStr[4]);
+                                System.out.println(rep);
+                                for(int i=0; i<rep; i++) {
+                                    startANewJob(arrayStr);
+                                }
+                            }catch (Exception e) {
+                                sendDisplayMessageToClient(out, DefaultKeys.wrongOptionMessage);
+                            }
+                        }else {
+                            startANewJob(arrayStr);
+                        }
                         break;
                     case DefaultKeys.checkOption:
                         if(arrayStr.length != 2) {
@@ -192,6 +232,14 @@ class ServerOneClient extends Thread{
                             sendDisplayMessageToClient(out, "Missing parameters!");
                         }else {
                             cancelJob(arrayStr[1]);
+                        }
+                        break;
+
+                    case DefaultKeys.receiveOption:
+                        if(arrayStr.length != 2) {
+                            sendDisplayMessageToClient(out, "Missing parameters!");
+                        }else {
+                            receiveJob(arrayStr[1]);
                         }
                         break;
                     default:

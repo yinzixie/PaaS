@@ -1,9 +1,68 @@
-import java.awt.desktop.SystemSleepEvent;
-import java.io.File;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
+import java.io.*;
 import java.util.*;
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+
+class runCommand extends Thread{
+    String host;
+    String user;
+    String privateKey;
+    String command;
+
+    runCommand(String ip, String key,String command) {
+        host = ip;
+        user = "ubuntu";
+        privateKey = key;
+        this.command = command;
+        start();
+    }
+
+    public void run() {
+        try {
+            JSch jsch = new JSch();
+            Session session = jsch.getSession(user, host, 22);
+            Properties config = new Properties();
+            //session.setPassword("KIT318");
+            jsch.addIdentity(privateKey);
+            System.out.println("identity added ");
+            config.put("StrictHostKeyChecking", "no");
+            session.setConfig(config);
+            session.connect();
+            Channel channel = session.openChannel("exec");
+            ((ChannelExec)channel).setCommand(command);
+
+            //channel.setInputStream(null);
+            //((ChannelExec)channel).setErrStream(System.err);
+            channel.setInputStream(System.in);
+            channel.connect();
+
+        /*InputStream input = channel.getInputStream();
+        try {
+        BufferedReader br = new BufferedReader(new InputStreamReader(input));
+        String line;
+        while ((line = br.readLine()) != null) {
+        System.out.println(line);
+        }
+
+        } catch (IOException io) {
+        System.out.println("Exception occurred during reading file from SFTP server due to " + io.getMessage());
+        io.getMessage();
+
+        } catch (Exception e) {
+        System.out.println("Exception occurred during reading file from SFTP server due to " + e.getMessage());
+        e.getMessage();
+        }*/
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+}
 
 class WorkerEndAdapter {
     String ip;
@@ -24,7 +83,7 @@ class WorkerEndAdapter {
     }
 
     public void print() {
-        String temp = "Worker End Health State\n" + "IP:" + ip + "\n" + "CPU: " + String.valueOf(CPU) + "%\n" + "Memory: " + String.valueOf(memory) + "%\n" + "Active: " + active + "\n" + "Requests in queue: " + String.valueOf(requests);
+        String temp = "\nWorker End Health State\n" + "IP:" + ip + "\n" + "CPU: " + String.valueOf(CPU) + "%\n" + "Memory: " + String.valueOf(memory) + "%\n" + "Active: " + active + "\n" + "Requests in queue: " + String.valueOf(requests) + "\n";
         System.out.println(temp);
     }
 }
@@ -41,21 +100,12 @@ class Storage {
 
 public class MasterEnd {
     private static Boolean workerAllBusy = false;
-    private static Boolean alreadyCreateExtraInstance = true;
+    private static Boolean alreadyCreateExtraInstance = false;
 
     public static void main(String[] args) {
-        //Cloud PaaS = new Cloud();
-        //openstack.createServer();
-        //PaaS.ListServers(PaaS.masterOS);
-        //openstack.deleteServer();
-        //openstack.ListFlavors();
-        //openstack.ListImages();
-
-
-        /*for(Object server:PaaS.servers) {
-            System.out.println(server);
-            //need to change after test
-        }*/
+        System.out.println("Initial PaaS...");
+        Cloud PaaS = new Cloud();
+        PaaS.ListServers(true, null);
 
         //local test code
         try {
@@ -97,15 +147,51 @@ public class MasterEnd {
                 }
                 //create new instance
                 if(workerAllBusy && !alreadyCreateExtraInstance) {
-                    workerEnd = Storage.workerEndList.get("120.0.0.1");
+                    String ip = PaaS.CreateServer();
+                    if(ip != null) {
+                        System.out.println("Trying to start Worker End...");
+                        try {
+                            TimeUnit.SECONDS.sleep(5);
+                            //System.out.println(Storage.jobQueue);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        new runCommand(ip, DefaultKeys.privateKey,"java -jar /home/ubuntu/PaaS/WorkerEnd.jar");
+                    }else {
+                        System.out.println("");
+                    }
+
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                        //System.out.println(Storage.jobQueue);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    workerEnd = Storage.workerEndList.get(ip);
 
                     alreadyCreateExtraInstance = true;
                 }else if(workerAllBusy){
+                    //assign work randomly
+                    int max = Storage.workerEndList.size();
+                    int num=(int)(Math.random()* max);//生成[0,size]之间的随机整数
+                    List <String> tempL = new ArrayList<String>(Storage.workerIPSet);
+                    try {
+                        workerEnd = Storage.workerEndList.get(tempL.get(num));
+                        System.out.println("All Worker Ends are busy, randomly choose Worker End:" + num);
+                        System.out.println(Storage.workerEndList);
+                    }catch (Exception e) {
+                        System.out.println("");
+                    }
+
+                    /*
                     //assign to first work end
                     Iterator<String> ips = Storage.workerIPSet.iterator();
                     if(ips.hasNext()) {
                         workerEnd = Storage.workerEndList.get(ips.next());
                     }
+                    */
                 }
 
                 if(workerEnd != null){

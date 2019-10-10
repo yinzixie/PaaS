@@ -35,6 +35,7 @@ public class Worker extends Thread{
 
         String appFilePath = dir + "/" + appName;
         String inputFilePath = dir + "/" + "input.txt";
+        String outputFilePath = dir + "/" + "output.txt";
 
         //Download files
         System.out.println("Downloading files for job: " + job.ID);
@@ -57,7 +58,7 @@ public class Worker extends Thread{
 
             builder.redirectErrorStream(true);// 重定向错误输出流到正常输出流
 
-            //builder.directory(dir);
+            builder.directory(dir);
             sendJobStateToMaster(out, job, "In Execution");
             workBook.currentProcess = builder.start();
             workBook.currentJob = job;
@@ -77,10 +78,10 @@ public class Worker extends Thread{
             remoteSrcs = new ArrayList<String>();
             localDsts = new ArrayList<String>();
 
-            remoteSrcs.add(inputFilePath);
-            localDsts.add(inputFilePath);
+            remoteSrcs.add(outputFilePath);
+            localDsts.add(outputFilePath);
 
-            if(FileIO.downloadFile(DefaultKeys.masterIP, DefaultKeys.privateKey, remoteSrcs, localDsts)) {
+            if(FileIO.uploadFile(DefaultKeys.masterIP, DefaultKeys.privateKey, localDsts, remoteSrcs)) {
                 sendJobStateToMaster(out, job, DefaultKeys.jobSucceed);
             }else {
                 sendJobStateToMaster(out, job, DefaultKeys.jobFailed);
@@ -123,7 +124,7 @@ public class Worker extends Thread{
                     System.out.println("Failed to start job\nError Details:");
                     e.printStackTrace();
                 }
-                System.out.println("finished");
+                System.out.println("Finished");
             }
             if(!workBook.cancelQueue.isEmpty()) {
                 workBook.workBookLock.lock();

@@ -27,6 +27,7 @@ class ServerOneSecretary extends Thread {
 
     public void closeConnection(){
         Storage.wLock.lock();
+        Storage.workerIPSet.remove(socket.getInetAddress().getHostAddress().toString());
         Storage.workerEndList.remove(socket.getInetAddress().getHostAddress().toString());
         Storage.wLock.unlock();
 
@@ -51,6 +52,7 @@ class ServerOneSecretary extends Thread {
             System.out.println("Can't close Server One Secretary!\nError Details: ");
             e.printStackTrace();
         }
+
     }
 
     private void sendJobToSecretary(PrintWriter out,Job job) {
@@ -90,7 +92,7 @@ class ServerOneSecretary extends Thread {
     }
 
     public void cancelJobToSecretary(PrintWriter out, Job job) {
-        out.println(DefaultKeys.CANCLE_JOB_FLAG);
+        out.println(DefaultKeys.CANCEL_JOB_FLAG);
         out.println(job.ID);
     }
 
@@ -104,7 +106,7 @@ class ServerOneSecretary extends Thread {
     }
 
     public void run() {
-        int period = 20;
+        int period = 10;
         int sec = 0;
         try {
             while (keepConnection) {
@@ -127,7 +129,9 @@ class ServerOneSecretary extends Thread {
                         Job newJob = jobQueue.poll();
                         jLock.unlock();
 
-                        jobList.add(newJob);
+                        if(!jobList.contains(jobList)) {
+                            jobList.add(newJob);
+                        }
                         sendJobToSecretary(out, newJob);
                     }
                     if(!cancelQueue.isEmpty()) {

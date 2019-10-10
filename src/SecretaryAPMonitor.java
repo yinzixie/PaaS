@@ -21,7 +21,7 @@ public class SecretaryAPMonitor extends Thread{
                     ServerOneSecretary secretary = new ServerOneSecretary(socket);
 
                     String ip = socket.getInetAddress().getHostAddress().toString();
-                    System.out.println(ip);
+                    System.out.println("Worker End " + ip + " Ready to go");
                     Storage.wLock.lock();
                     Storage.workerIPSet.add(ip);
                     Storage.wLock.unlock();
@@ -32,6 +32,7 @@ public class SecretaryAPMonitor extends Thread{
                     Storage.wLock.lock();
                     Storage.workerEndList.put(ip,adapter);
                     Storage.wLock.unlock();
+                    System.out.println("Worker Ends in Master: " + Storage.workerEndList);
                 } catch (Exception e) {
                     // If it fails, close the socket,
                     // otherwise the thread will close it:

@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: openstack4j-3.1.1-20181013.160235-27-withdeps.jar slf4j-jd
+ k14-1.7.24.jar jsch-0.1.55.jar slf4j-api-1.7.24.jar
+Main-Class: MasterEnd
+

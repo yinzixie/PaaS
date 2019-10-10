@@ -1,9 +1,16 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DefaultKeys {
     public static final String DISPLAY_MESSAGE_FLAG = "DISPLAY_MESSAGE_START"; //message need to be displayed on the client
     public static final String PARAMETER_MESSAGE_FLAG = "PARAMETER_MESSAGE_START"; //message include parameter need let client know
     public static final String INQUIRY_MESSAGE_FLAG = "INQUIRY_MESSAGE_START"; //message need to be replied from client
 
-    public static final String UPLOAD_FILE_FLAG = "UPLOAD_FILE_PERMIT_FLAG"; //message tell receiver can upload files
+    public static final String PERMIT_UPLOAD_FLAG = "PERMIT_UPLOAD_FLAG"; //message tell receiver can upload files
+    public static final String PERMIT_DOWNLOAD_FLAG = "PERMIT_DOWNLOAD_FLAG";
+
+    public static final String END_UPLOAD_FILE_SUCCEED = "END_UPLOAD_FILE_SUCCEED";
+    public static final String END_UPLOAD_FILE_FAILED = "END_UPLOAD_FILE_FAILED";
 
     public static final String ASSIGN_JOB_MESSAGE_FLAG = "ASSIGN_JOB_MESSAGE_START";
 
@@ -15,20 +22,13 @@ public class DefaultKeys {
 
     public static final String MESSAGE_END_FLAG = "MESSAGE_END";
 
+    public static final String CANCEL_JOB_FLAG = "CANCel_JOB";
 
     public static final String workerDied = "WORKER_DIED";
 
     public static final String jobSucceed = "Job Succeed";
     public static final String jobCanceled = "Job Canceled";
     public static final String jobFailed= "Job Failed";
-
-    public static final String CANCLE_JOB_FLAG = "CANCLE_JOB";
-
-    //public static final String START_CONNECTION_FLAG = "START_UPLOAD_FILE";
-
-    public static final String START_UPLOAD_FILE = "START_UPLOAD_FILE";
-    public static final String END_UPLOAD_FILE_SUCCEED = "END_UPLOAD_FILE_SUCCEED";
-    public static final String END_UPLOAD_FILE_FAILED = "END_UPLOAD_FILE_FAILED";
 
     public static final String startOption = "START";
     public static final String checkOption = "CHECK";
@@ -62,8 +62,20 @@ public class DefaultKeys {
 
     public static final String privateKey = "/home/ubuntu/PaaS/key.pem";
 
-    public static final String masterIP = "144.6.227.102";//"localhost";//"";
-    public static final String worker1IP = "144.6.227.83";
+    public static final String masterIP = "144.6.227.102";//"localhost";//
+
+    public static final String worker1IP = "144.6.227.111";
     public static final String worker2IP = "144.6.227.90";//tommy
     public static final String worker3IP = "115.146.84.200";
+
+    public static final String outputFileName = "output.txt";
+    public static final String billFileName = "bill.txt";
+
+    public static String getTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
+        sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");// a为am/pm的标记
+        Date date = new Date();// 获取当前时间
+        return sdf.format(date); // 输出已经格式化的现在时间（24小时制）
+    }
+
 }

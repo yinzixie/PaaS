@@ -12,14 +12,14 @@ import java.util.Properties;
 public class uploadFileTemp {
     public static void runCommand() {
         try {
-            String command = "java /home/ubuntu/PaaS/ServerEnd";
-            String host = DefaultKeys.masterIP;
+            String command = "java -jar /home/ubuntu/PaaS/WorkerEnd.jar";
+            String host = DefaultKeys.worker1IP;
             String user = "ubuntu";
-            String privateKey = "D:\\University of Tasmania\\2019\\Semester 2\\KIT318 Big Data and Cloud Computing\\key.pem";
+            String privateKey = "key.pem";
             JSch jsch = new JSch();
             Session session = jsch.getSession(user, host, 22);
             Properties config = new Properties();
-            session.setPassword("KIT318");
+            //session.setPassword("KIT318");
             jsch.addIdentity(privateKey);
             System.out.println("identity added ");
             config.put("StrictHostKeyChecking", "no");
@@ -55,44 +55,6 @@ public class uploadFileTemp {
         }
     }
 
-    public static void uploadFile(List<String> srcs, List<String> dsts, String host) {
-        try {
-            //host = "115.146.84.200";//"144.6.227.102";
-            String user = "ubuntu";
-            String privateKey = "D:\\University of Tasmania\\2019\\Semester 2\\KIT318 Big Data and Cloud Computing\\key.pem";
-            JSch jsch = new JSch();
-            Session session = jsch.getSession(user, host, 22);
-            Properties config = new Properties();
-            //session.setPassword("KIT418@utas"); ////if password is empty please comment it
-            jsch.addIdentity(privateKey);
-            System.out.println("identity added ");
-            config.put("StrictHostKeyChecking", "no");
-            session.setConfig(config);
-            session.connect();
-
-            Channel channel = session.openChannel("sftp");
-            channel.connect();
-            ChannelSftp sftpChannel = (ChannelSftp) channel;
-
-            int index = 0;
-            for(String src:srcs) {
-                sftpChannel.put(src, dsts.get(index), ChannelSftp.OVERWRITE);
-                index++;
-            }
-
-
-            sftpChannel.exit();
-            session.disconnect();
-        } catch (JSchException e) {
-            e.printStackTrace();
-        } catch (SftpException e) {
-            e.printStackTrace();
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-    }
-
     public static void main(String[] args) {
 
 
@@ -102,61 +64,36 @@ public class uploadFileTemp {
         String src6 = "app.py"; // 本地文件名
         String dst6 = "/home/ubuntu/app.py";//"/home/ubuntu/Input/test.txt"; // 目标文件名
 
-
         List<String> MasterSrcs = new ArrayList<String>();
         List<String> MasterDsts = new ArrayList<String>();
 
-        MasterSrcs.add("out\\production\\PaaS\\FileIO.class");
-        MasterDsts.add("/home/ubuntu/PaaS/FileIO.class");
+        //MasterSrcs.add("key.pem");
+        //MasterDsts.add("/home/ubuntu/PaaS/key.pem");
 
-        MasterSrcs.add("out\\production\\PaaS\\Cloud.class");
-        MasterDsts.add("/home/ubuntu/PaaS/Cloud.class");
+        //MasterSrcs.add("out\\artifacts\\PaaS_jar\\jsch-0.1.55.jar");
+        //MasterDsts.add("/home/ubuntu/PaaS/jsch-0.1.55.jar");
 
-        MasterSrcs.add("out\\production\\PaaS\\DefaultKeys.class");
-        MasterDsts.add("/home/ubuntu/PaaS/DefaultKeys.class");
+       // MasterSrcs.add("out\\artifacts\\PaaS_jar\\openstack4j-3.1.1-20181013.160235-27-withdeps.jar");
+        //MasterDsts.add("/home/ubuntu/PaaS/openstack4j-3.1.1-20181013.160235-27-withdeps.jar");
 
-        MasterSrcs.add("out\\production\\PaaS\\Storage.class");
-        MasterDsts.add("/home/ubuntu/PaaS/Storage.class");
+        //MasterSrcs.add("out\\artifacts\\PaaS_jar\\slf4j-api-1.7.24.jar");
+        //MasterDsts.add("/home/ubuntu/PaaS/slf4j-api-1.7.24.jar");
 
-        MasterSrcs.add("out\\production\\PaaS\\WorkerEndAdapter.class");
-        MasterDsts.add("/home/ubuntu/PaaS/WorkerEndAdapter.class");
+        //MasterSrcs.add("out\\artifacts\\PaaS_jar\\slf4j-jdk14-1.7.24.jar");
+        //MasterDsts.add("/home/ubuntu/PaaS/slf4j-jdk14-1.7.24.jar");
 
-        MasterSrcs.add("out\\production\\PaaS\\Job.class");
-        MasterDsts.add("/home/ubuntu/PaaS/Job.class");
+        MasterSrcs.add("out\\artifacts\\PaaS_jar\\MasterEnd.jar");
+        MasterDsts.add("/home/ubuntu/PaaS/MasterEnd.jar");
 
-        MasterSrcs.add("out\\production\\PaaS\\MasterEnd.class");
-        MasterDsts.add("/home/ubuntu/PaaS/MasterEnd.class");
+        //MasterSrcs.add("app.py");
+        //MasterDsts.add("/home/ubuntu/PaaS/app.py");
 
-        MasterSrcs.add("out\\production\\PaaS\\ClientAPMonitor.class");
-        MasterDsts.add("/home/ubuntu/PaaS/ClientAPMonitor.class");
-
-        MasterSrcs.add("out\\production\\PaaS\\WorkerEndAPMonitor.class");
-        MasterDsts.add("/home/ubuntu/PaaS/WorkerEndAPMonitor.class");
-
-        MasterSrcs.add("out\\production\\PaaS\\SecretaryAPMonitor.class");
-        MasterDsts.add("/home/ubuntu/PaaS/SecretaryAPMonitor.class");
-
-        MasterSrcs.add("out\\production\\PaaS\\WorkerAPMonitor.class");
-        MasterDsts.add("/home/ubuntu/PaaS/WorkerAPMonitor.class");
-
-        MasterSrcs.add("out\\production\\PaaS\\ServerOneClient.class");
-        MasterDsts.add("/home/ubuntu/PaaS/ServerOneClient.class");
-
-        MasterSrcs.add("out\\production\\PaaS\\ServerOneSecretary.class");
-        MasterDsts.add("/home/ubuntu/PaaS/ServerOneSecretary.class");
-
-        MasterSrcs.add("out\\production\\PaaS\\ServerOneWorker.class");
-        MasterDsts.add("/home/ubuntu/PaaS/ServerOneWorker.class");
-
-        MasterSrcs.add("app.py");
-        MasterDsts.add("/home/ubuntu/PaaS/app.py");
-
-        uploadFile(MasterSrcs,MasterDsts,DefaultKeys.masterIP);
+        FileIO.uploadFile(DefaultKeys.masterIP,"key.pem", MasterSrcs,MasterDsts);
 
         List<String> workerSrcs = new ArrayList<String>();
         List<String> workerDsts = new ArrayList<String>();
 
-        workerSrcs.add("out\\production\\PaaS\\FileIO.class");
+       /* workerSrcs.add("out\\production\\PaaS\\FileIO.class");
         workerDsts.add("/home/ubuntu/PaaS/FileIO.class");
 
         workerSrcs.add("out\\production\\PaaS\\DefaultKeys.class");
@@ -190,9 +127,29 @@ public class uploadFileTemp {
         workerDsts.add("/home/ubuntu/PaaS/key.pem");
 
         workerSrcs.add("jsch-0.1.55.jar");
+        workerDsts.add("/home/ubuntu/PaaS/jsch-0.1.55.jar");*/
+
+        /*workerSrcs.add("key.pem");
+        workerDsts.add("/home/ubuntu/PaaS/key.pem");
+
+        workerSrcs.add("out\\artifacts\\PaaS_jar\\jsch-0.1.55.jar");
         workerDsts.add("/home/ubuntu/PaaS/jsch-0.1.55.jar");
 
-        uploadFile(workerSrcs,workerDsts,DefaultKeys.worker2IP);
+        workerSrcs.add("out\\artifacts\\PaaS_jar\\openstack4j-3.1.1-20181013.160235-27-withdeps.jar");
+        workerDsts.add("/home/ubuntu/PaaS/openstack4j-3.1.1-20181013.160235-27-withdeps.jar");
+
+        workerSrcs.add("out\\artifacts\\PaaS_jar\\slf4j-api-1.7.24.jar");
+        workerDsts.add("/home/ubuntu/PaaS/slf4j-api-1.7.24.jar");
+
+        workerSrcs.add("out\\artifacts\\PaaS_jar\\slf4j-jdk14-1.7.24.jar");
+        workerDsts.add("/home/ubuntu/PaaS/slf4j-jdk14-1.7.24.jar");*/
+
+        workerSrcs.add("out\\artifacts\\PaaS_jar\\WorkerEnd.jar");
+        workerDsts.add("/home/ubuntu/PaaS/WorkerEnd.jar");
+
+
+        //FileIO.uploadFile(DefaultKeys.worker1IP,"key.pem", workerSrcs,workerDsts);
+        //FileIO.uploadFile(DefaultKeys.worker2IP,"key.pem", workerSrcs,workerDsts);
 
         List<String> WorkerSrcs = new ArrayList<String>();
         List<String> WorkerDsts = new ArrayList<String>();
@@ -200,6 +157,8 @@ public class uploadFileTemp {
         WorkerSrcs.add("/home/ubuntu/app.py");
         WorkerDsts.add("add.py");
 
-        //FileIO.downloadFile(DefaultKeys.masterIP,"key.pem" ,WorkerSrcs, WorkerDsts);
+        //FileIO.downloadFile(DefaultKeys.worker1IP,"key.pem" ,WorkerSrcs, WorkerDsts);
+
+        //runCommand();
     }
 }

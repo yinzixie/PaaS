@@ -4,6 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
+import org.openstack4j.api.exceptions.ClientResponseException;
 import org.openstack4j.model.common.Identifier;
 import org.openstack4j.model.compute.Flavor;
 import org.openstack4j.model.compute.Server;
@@ -12,21 +13,36 @@ import org.openstack4j.model.image.Image;
 import org.openstack4j.openstack.OSFactory;
 
 public class Cloud {
-    OSClientV3 masterOS=null;
+    OSClientV3 os=null;
+    public boolean result = false;
+    String newIP = null;
+
+    int waitsec = 20 * 1000; //30s
+    String acc = "jliu40@utas.edu.au";
+    String pwd = "ZTJkZGEwYTNmZWE4NDFi";
+
+    /*OSClientV3 masterOS=null;
     OSClientV3 worker1OS=null;
     OSClientV3 worker2OS=null;
-    OSClientV3 standbyWorkerOS=null;
+    OSClientV3 standbyWorkerOS=null;*/
 
     List servers;
 
     public Cloud() {
-        masterOS = OSFactory.builderV3()
+
+        os = OSFactory.builderV3()
+                .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
+                .credentials("yypeng@utas.edu.au", "YzNlMDYyNThmNWQ4MmNi", Identifier.byName("Default"))
+                .scopeToProject(Identifier.byId("f4c9952b6d7843bcbc6c183a6617b150"))
+                .authenticate();
+
+       /* masterOS = OSFactory.builderV3()
                 .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
                 .credentials("yinzix@utas.edu.au", "NDAxMjQxNzMyODAwNWI2",Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId("72a0388a8ea44bdeb096e05edc6974f8"))
                 .authenticate();
 
-       /* worker1OS = OSFactory.builderV3()
+        worker1OS = OSFactory.builderV3()
                 .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
                 .credentials("yypeng@utas.edu.au", "Y2ZmYzE5Y2JjMWMwZjZk",Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId("f4c9952b6d7843bcbc6c183a6617b150"))
@@ -51,37 +67,116 @@ public class Cloud {
         //System.out.println(servers);
     }
 
-    public void createServer() {
-        ServerCreate server = Builders.server()
-                .name("KIT318")
-                .flavor("1")
-                .image("99d9449a-084f-4901-8bd8-c04aebd589ca")
-                .keypairName("key")
-                .build();
+    public static class newWorker{
+        static String name = "newWorker";
+        static String flavor = "cba9ea52-8e90-468b-b8c2-777a94d81ed3";
+        static String image = "64b013fb-0f56-418f-97e8-5ee3d1a9664b";
+        static String ip4 = null;
+        static String status = Server.Status.UNKNOWN.name();
+    }
 
-        standbyWorkerOS.compute().servers().boot(server);
+    @SuppressWarnings("finally")
+    public String CreateServer() {
+        System.out.println("Create new instance...");
+        try {
+            ServerCreate server = Builders.server()
+                    .name(newWorker.name)
+                    .flavor(newWorker.flavor)
+                    .image(newWorker.image)
+                    .keypairName("key")
+                    .build();
+
+            os.compute().servers().boot(server);
+
+            //ListServers(false,worker.name);et ip: 144.6.227.147
+
+            result = true;
+
+        } catch(ClientResponseException e) {
+            //e.printStackTrace();
+            result = false;
+            System.out.println("The instance has already existed " + e.getMessage() + "; getStatus: " + e.getStatus() + "; getStatusCode: "+ e.getStatusCode());
+
+            //CoverServer();
+
+        } catch(Exception e) {
+            //e.printStackTrace();
+            result = false;
+            System.out.println("UNEXPECTED ERROR ... " + e.getMessage());
+
+        }
+        finally {
+            if(result)
+            {
+                int try_time = 0;
+                while(newWorker.ip4 == null || newWorker.ip4.trim().length() < 1) {
+                    try {
+                        try_time++;
+                        Thread.sleep(waitsec);
+                        System.out.println("Trying to get new instance ip...");
+                        ListServers(false,newWorker.name);
+                        if(try_time > 6) {
+                            break;
+                        }
+                    } catch (InterruptedException e) {
+                        System.out.println("UNEXPECTED ERROR ... " + e.getMessage());
+                    }
+                }
+            }else {
+                System.out.println("Failed to get new instance ip");
+                return null;
+            }
+            System.out.println("Get ip: " + newWorker.ip4);
+            return newWorker.ip4;
+        }
+    }
+
+    //List of all Servers
+    public void ListServers(boolean displayAll, String name) {
+        List<? extends Server> servers = os.compute().servers().list();
+        if(servers!=null && servers.size()>0) {
+            if(displayAll) {
+                System.out.println(servers);
+            }
+            else {
+                //foreach (Server s in servers)
+                for (int i = 0; i<servers.size(); i++){
+                    if(servers.get(i).getName().equals(name)) {
+                        newWorker.ip4 = servers.get(i).getAccessIPv4();
+                        newWorker.status = servers.get(i).getStatus().name();
+                        System.out.println(name + "; " + newWorker.ip4 + "; " + newWorker.status);
+                    }
+                }
+            }
+        }
+    }
+
+    //Delete a Server
+    public void DeleteServer(String identifier) {
+        os.compute().servers().delete(identifier);
+    }
+
+    //Delete the last server and create a new one
+    public void CoverServer() {
+        List<? extends Server> servers = os.compute().servers().list();
+        if(servers!=null && servers.size()>0) {
+            os.compute().servers().delete(servers.get(0).getName());
+            //check if it is deleted or not. if deleted, then create a new one
+            //....
+            CreateServer();
+        }
     }
 
     //List of all flavors
-    public void ListFlavors(OSClientV3 os) {
-
+    public void ListFlavors() {
         List<Flavor> flavors = (List<Flavor>) os.compute().flavors().list();
         System.out.println(flavors);
+        System.out.println(flavors.get(0).toString());
     }
 
     //List of all images
-    public void ListImages(OSClientV3 os) {
-
+    public void ListImages() {
         List<? extends Image> images = (List<? extends Image>) os.compute().images().list();
         System.out.println(images);
-    }
-    //List of all Servers
-    public void ListServers(OSClientV3 os) {
-        List<? extends Server> servers = os.compute().servers().list();
-        System.out.println(servers);
-    }
-    //Delete a Server
-    public void deleteServer(OSClientV3 os) {
-        os.compute().servers().delete("2cecd39a-97fd-417f-9eda-38185f0d4918");
     }
 }

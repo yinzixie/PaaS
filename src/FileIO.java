@@ -1,5 +1,4 @@
 import com.jcraft.jsch.*;
-
 import java.io.*;
 import java.util.List;
 import java.util.Properties;
@@ -25,6 +24,10 @@ public class FileIO {
 
             int index = 0;
             for (String remotePath : remotePaths) {
+                File saveF= new File(savePaths.get(index));
+                if(saveF.exists()) {
+                    saveF.delete();
+                }
                 System.out.println("Downloading file: " + remotePath);
                 BufferedWriter writer = new BufferedWriter(new FileWriter(savePaths.get(index), true)); //local path to store downloaded file
                 InputStream stream = sftpChannel.get(remotePath); //server file path
