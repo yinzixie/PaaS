@@ -144,8 +144,8 @@ public class uploadFileTemp {
         workerSrcs.add("out\\artifacts\\PaaS_jar\\slf4j-jdk14-1.7.24.jar");
         workerDsts.add("/home/ubuntu/PaaS/slf4j-jdk14-1.7.24.jar");*/
 
-        workerSrcs.add("out\\artifacts\\PaaS_jar\\WorkerEnd.jar");
-        workerDsts.add("/home/ubuntu/PaaS/WorkerEnd.jar");
+        workerSrcs.add("out\\artifacts\\PaaS_jar\\Cloud.jar");
+        workerDsts.add("/home/ubuntu/PaaS/Cloud.jar");
 
 
         //FileIO.uploadFile(DefaultKeys.worker1IP,"key.pem", workerSrcs,workerDsts);

@@ -60,7 +60,7 @@ public class DefaultKeys {
 
     public static final String workDir = "/home/ubuntu/PaaS/WorkDir/";
 
-    public static final String privateKey = "/home/ubuntu/PaaS/key.pem";
+    public static final String privateKey = "key.pem";//"/home/ubuntu/PaaS/key.pem";
 
     public static final String masterIP = "144.6.227.102";//"localhost";//
 

@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.openstack4j.api.Builders;
@@ -73,6 +74,7 @@ public class Cloud {
         static String image = "64b013fb-0f56-418f-97e8-5ee3d1a9664b";
         static String ip4 = null;
         static String status = Server.Status.UNKNOWN.name();
+        static int powerState = 0;
     }
 
     @SuppressWarnings("finally")
@@ -84,6 +86,7 @@ public class Cloud {
                     .flavor(newWorker.flavor)
                     .image(newWorker.image)
                     .keypairName("key")
+                    .addSecurityGroup("ssh")
                     .build();
 
             os.compute().servers().boot(server);
@@ -109,13 +112,13 @@ public class Cloud {
             if(result)
             {
                 int try_time = 0;
-                while(newWorker.ip4 == null || newWorker.ip4.trim().length() < 1) {
+                while(newWorker.status != "ACTIVE" || newWorker.powerState != 1 || newWorker.ip4 == null) {
                     try {
                         try_time++;
                         Thread.sleep(waitsec);
                         System.out.println("Trying to get new instance ip...");
                         ListServers(false,newWorker.name);
-                        if(try_time > 6) {
+                        if(try_time > 20) {
                             break;
                         }
                     } catch (InterruptedException e) {
@@ -144,6 +147,7 @@ public class Cloud {
                     if(servers.get(i).getName().equals(name)) {
                         newWorker.ip4 = servers.get(i).getAccessIPv4();
                         newWorker.status = servers.get(i).getStatus().name();
+                        newWorker.powerState = Integer.parseInt( servers.get(i).getPowerState());
                         System.out.println(name + "; " + newWorker.ip4 + "; " + newWorker.status);
                     }
                 }
@@ -179,4 +183,24 @@ public class Cloud {
         List<? extends Image> images = (List<? extends Image>) os.compute().images().list();
         System.out.println(images);
     }
+
+    /*public static void main(String[] args) {
+        Cloud PaaS = new Cloud();
+        PaaS.ListServers(true, null);
+
+        String ip = PaaS.CreateServer();
+        if(ip != null) {
+            System.out.println("Trying to start Worker End...");
+            try {
+                TimeUnit.SECONDS.sleep(60);
+                //System.out.println(Storage.jobQueue);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            new runCommand(ip, DefaultKeys.privateKey,"java -jar /home/ubuntu/PaaS/WorkerEnd.jar");
+        }else {
+            System.out.println("");
+        }
+    }*/
 }

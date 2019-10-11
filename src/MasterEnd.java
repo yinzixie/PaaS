@@ -37,27 +37,28 @@ class runCommand extends Thread{
             Channel channel = session.openChannel("exec");
             ((ChannelExec)channel).setCommand(command);
 
-            //channel.setInputStream(null);
-            //((ChannelExec)channel).setErrStream(System.err);
+            channel.setInputStream(null);
+            ((ChannelExec)channel).setErrStream(System.err);
+
             channel.setInputStream(System.in);
             channel.connect();
 
-        /*InputStream input = channel.getInputStream();
-        try {
-        BufferedReader br = new BufferedReader(new InputStreamReader(input));
-        String line;
-        while ((line = br.readLine()) != null) {
-        System.out.println(line);
-        }
+            /*InputStream input = channel.getInputStream();
+            try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+            String line;
+            while ((line = br.readLine()) != null) {
+            System.out.println(line);
+            }
 
-        } catch (IOException io) {
-        System.out.println("Exception occurred during reading file from SFTP server due to " + io.getMessage());
-        io.getMessage();
+            } catch (IOException io) {
+            System.out.println("Exception occurred during reading file from SFTP server due to " + io.getMessage());
+            io.getMessage();
 
-        } catch (Exception e) {
-        System.out.println("Exception occurred during reading file from SFTP server due to " + e.getMessage());
-        e.getMessage();
-        }*/
+            } catch (Exception e) {
+            System.out.println("Exception occurred during reading file from SFTP server due to " + e.getMessage());
+            e.getMessage();
+            }*/
         }catch(Exception e){
             System.out.println(e);
         }
@@ -151,7 +152,7 @@ public class MasterEnd {
                     if(ip != null) {
                         System.out.println("Trying to start Worker End...");
                         try {
-                            TimeUnit.SECONDS.sleep(5);
+                            TimeUnit.SECONDS.sleep(60);
                             //System.out.println(Storage.jobQueue);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -159,11 +160,11 @@ public class MasterEnd {
 
                         new runCommand(ip, DefaultKeys.privateKey,"java -jar /home/ubuntu/PaaS/WorkerEnd.jar");
                     }else {
-                        System.out.println("");
+                        System.out.println("Failed started Worker End");
                     }
 
                     try {
-                        TimeUnit.SECONDS.sleep(2);
+                        TimeUnit.SECONDS.sleep(10);
                         //System.out.println(Storage.jobQueue);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
