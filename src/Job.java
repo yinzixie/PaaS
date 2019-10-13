@@ -20,11 +20,10 @@ public class Job {
         StartTime = DefaultKeys.getTime();
 
         appFile = app;
-        appType = appFile.substring(appFile.lastIndexOf(".") + 1);
+        appType = app.substring(app.lastIndexOf(".") + 1);
 
         inputFile = input;
         time = t;
-
         state = "Initializing";
     }
 }

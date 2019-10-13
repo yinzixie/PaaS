@@ -5,10 +5,10 @@
       <element id="archive" name="PaaS.jar">
         <element id="module-output" name="PaaS" />
       </element>
+      <element id="file-copy" path="$PROJECT_DIR$/slf4j-api-1.7.24.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/openstack4j-3.1.1-20181013.160235-27-withdeps.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/slf4j-jdk14-1.7.24.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/jsch-0.1.55.jar" />
-      <element id="file-copy" path="$PROJECT_DIR$/slf4j-api-1.7.24.jar" />
     </root>
   </artifact>
 </component>

@@ -22,7 +22,7 @@ public class Worker extends Thread{
         String cmd;
         String appName;
 
-        if(job.appType == "jar") {
+        if(job.appType.equalsIgnoreCase("jar")) {
             cmd = "java -jar";
             appName = "app.jar";
         }else {
@@ -115,12 +115,13 @@ public class Worker extends Thread{
                 e.printStackTrace();
             }
             if(!workBook.jobQueue.isEmpty()) {
+                workBook.workBookLock.lock();
+                Job j = workBook.jobQueue.poll();
+                workBook.workBookLock.unlock();
                 try {
-                    workBook.workBookLock.lock();
-                    Job j = workBook.jobQueue.poll();
-                    workBook.workBookLock.unlock();
                     startJob(j);
                 } catch (Exception e) {
+                    sendJobStateToMaster(out, j, DefaultKeys.jobFailed);
                     System.out.println("Failed to start job\nError Details:");
                     e.printStackTrace();
                 }
