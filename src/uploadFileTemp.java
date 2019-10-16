@@ -1,11 +1,9 @@
 import com.jcraft.jsch.*;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -149,7 +147,7 @@ public class uploadFileTemp {
 
 
         FileIO.uploadFile(DefaultKeys.worker1IP,"key.pem", workerSrcs,workerDsts);
-        //FileIO.uploadFile(DefaultKeys.worker2IP,"key.pem", workerSrcs,workerDsts);
+        FileIO.uploadFile(DefaultKeys.worker2IP,"key.pem", workerSrcs,workerDsts);
 
         List<String> WorkerSrcs = new ArrayList<String>();
         List<String> WorkerDsts = new ArrayList<String>();
@@ -160,5 +158,36 @@ public class uploadFileTemp {
         //FileIO.downloadFile(DefaultKeys.worker1IP,"key.pem" ,WorkerSrcs, WorkerDsts);
 
         //runCommand();
+
+       /* List<String> cmdList = Arrays.asList("java -jar", "/home/ubuntu/PaaS/WorkDir/ZLsCXyc9/app.jar", "/home/ubuntu/PaaS/WorkDir/ZLsCXyc9/input.txt");
+        System.out.println(cmdList);
+        System.out.println("Creating Process");
+
+        ProcessBuilder builder = new ProcessBuilder(cmdList);
+
+        builder.redirectErrorStream(true);// 重定向错误输出流到正常输出流
+
+        File dir = new File("/home/ubuntu/PaaS/WorkDir/ZLsCXyc9/");
+
+        //builder.directory(dir);
+        Process currentProcess = null;
+        try {
+            //String command = cmdList.get(0) + " " +
+
+            currentProcess =  Runtime.getRuntime().exec("python /home/ubuntu/PaaS/WorkDir/48isvCMa/app.py /home/ubuntu/PaaS/WorkDir/48isvCMa/input.txt", null, dir);
+
+            InputStream is = currentProcess.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+            currentProcess.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+
     }
 }

@@ -50,17 +50,19 @@ public class Worker extends Thread{
         localDsts.add(inputFilePath);
 
         if(FileIO.downloadFile(DefaultKeys.masterIP, DefaultKeys.privateKey, remoteSrcs, localDsts)) {
-            List<String> cmdList = Arrays.asList(cmd, appFilePath, inputFilePath);
-            System.out.println(cmdList);
+            String command = cmd + " " + appFilePath + " " + inputFilePath;
+            //List<String> cmdList = Arrays.asList(cmd, appFilePath, inputFilePath);
+            System.out.println(command);
             System.out.println("Creating Process");
 
-            ProcessBuilder builder = new ProcessBuilder(cmdList);
+            //ProcessBuilder builder = new ProcessBuilder(cmdList);
 
-            builder.redirectErrorStream(true);// 重定向错误输出流到正常输出流
+           // builder.redirectErrorStream(true);// 重定向错误输出流到正常输出流
 
-            builder.directory(dir);
+            //builder.directory(dir);
+
             sendJobStateToMaster(out, job, "In Execution");
-            workBook.currentProcess = builder.start();
+            workBook.currentProcess = Runtime.getRuntime().exec(command, null, dir);//builder.start();
             workBook.currentJob = job;
 
             InputStream is = workBook.currentProcess.getInputStream();

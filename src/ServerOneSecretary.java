@@ -33,6 +33,7 @@ class ServerOneSecretary extends Thread {
 
         if(this.jobList.size() > 0) {
             for(Job job:this.jobList){
+                job.secretaryForWorker = null;
                 if(Storage.jobList.get(job.ID).state != DefaultKeys.jobSucceed || Storage.jobList.get(job.ID).state != DefaultKeys.jobCanceled) {
                     job.state = "Re Assigning...";
                     Storage.jLock.lock();
