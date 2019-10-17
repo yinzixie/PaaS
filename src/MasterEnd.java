@@ -148,6 +148,7 @@ public class MasterEnd {
                 }
                 //create new instance
                 if(workerAllBusy && !alreadyCreateExtraInstance) {
+                    alreadyCreateExtraInstance = true;
                     String ip = PaaS.CreateServer();
                     if(ip != null) {
                         System.out.println("Trying to start Worker End...");
@@ -159,6 +160,7 @@ public class MasterEnd {
                         }
 
                         new runCommand(ip, DefaultKeys.privateKey,"java -jar /home/ubuntu/PaaS/WorkerEnd.jar");
+                        workerEnd = Storage.workerEndList.get(ip);
                     }else {
                         System.out.println("Failed started Worker End");
                     }
@@ -169,10 +171,6 @@ public class MasterEnd {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    workerEnd = Storage.workerEndList.get(ip);
-
-                    alreadyCreateExtraInstance = true;
                 }else if(workerAllBusy){
                     //assign work randomly
                     int max = Storage.workerEndList.size();

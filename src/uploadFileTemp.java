@@ -2,16 +2,14 @@ import com.jcraft.jsch.*;
 
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Properties;
 
 public class uploadFileTemp {
     public static void runCommand() {
         try {
             String command = "java -jar /home/ubuntu/PaaS/WorkerEnd.jar";
-            String host = DefaultKeys.worker1IP;
+            String host = DefaultKeys.worker0IP;
             String user = "ubuntu";
             String privateKey = "key.pem";
             JSch jsch = new JSch();
@@ -54,14 +52,6 @@ public class uploadFileTemp {
     }
 
     public static void main(String[] args) {
-
-
-        String worker1 = "144.6.227.83";
-        String workerTommy = "115.146.84.200";
-        String workerLiujin = "144.6.227.83";
-        String src6 = "app.py"; // 本地文件名
-        String dst6 = "/home/ubuntu/app.py";//"/home/ubuntu/Input/test.txt"; // 目标文件名
-
         List<String> MasterSrcs = new ArrayList<String>();
         List<String> MasterDsts = new ArrayList<String>();
 
@@ -85,8 +75,7 @@ public class uploadFileTemp {
 
         //MasterSrcs.add("app.py");
         //MasterDsts.add("/home/ubuntu/PaaS/app.py");
-
-        //FileIO.uploadFile(DefaultKeys.masterIP,"key.pem", MasterSrcs,MasterDsts);
+        FileIO.uploadFile(DefaultKeys.masterIP,"key.pem", MasterSrcs,MasterDsts);
 
         List<String> workerSrcs = new ArrayList<String>();
         List<String> workerDsts = new ArrayList<String>();
@@ -127,7 +116,7 @@ public class uploadFileTemp {
         workerSrcs.add("jsch-0.1.55.jar");
         workerDsts.add("/home/ubuntu/PaaS/jsch-0.1.55.jar");*/
 
-        /*workerSrcs.add("key.pem");
+        workerSrcs.add("key.pem");
         workerDsts.add("/home/ubuntu/PaaS/key.pem");
 
         workerSrcs.add("out\\artifacts\\PaaS_jar\\jsch-0.1.55.jar");
@@ -140,14 +129,14 @@ public class uploadFileTemp {
         workerDsts.add("/home/ubuntu/PaaS/slf4j-api-1.7.24.jar");
 
         workerSrcs.add("out\\artifacts\\PaaS_jar\\slf4j-jdk14-1.7.24.jar");
-        workerDsts.add("/home/ubuntu/PaaS/slf4j-jdk14-1.7.24.jar");*/
+        workerDsts.add("/home/ubuntu/PaaS/slf4j-jdk14-1.7.24.jar");
 
         workerSrcs.add("out\\artifacts\\PaaS_jar\\WorkerEnd.jar");
         workerDsts.add("/home/ubuntu/PaaS/WorkerEnd.jar");
 
 
-        FileIO.uploadFile(DefaultKeys.worker1IP,"key.pem", workerSrcs,workerDsts);
-        FileIO.uploadFile(DefaultKeys.worker2IP,"key.pem", workerSrcs,workerDsts);
+        //FileIO.uploadFile(DefaultKeys.worker0IP,"key.pem", workerSrcs,workerDsts);
+        //FileIO.uploadFile(DefaultKeys.worker2IP,"key.pem", workerSrcs,workerDsts);
 
         List<String> WorkerSrcs = new ArrayList<String>();
         List<String> WorkerDsts = new ArrayList<String>();

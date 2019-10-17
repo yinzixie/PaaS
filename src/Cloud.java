@@ -30,23 +30,21 @@ public class Cloud {
     List servers;
 
     public Cloud() {
-
         os = OSFactory.builderV3()
+                .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
+                .credentials("yuhangy@utas.edu.au", "Y2QyMGRiNzVkMjllOTQ3", Identifier.byName("Default"))
+                .scopeToProject(Identifier.byId("9febfc289d494d55a7509c084e446a5e"))
+                .authenticate();
+        /*os = OSFactory.builderV3()
                 .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
                 .credentials("yypeng@utas.edu.au", "YzNlMDYyNThmNWQ4MmNi", Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId("f4c9952b6d7843bcbc6c183a6617b150"))
-                .authenticate();
+                .authenticate();*/
 
        /* masterOS = OSFactory.builderV3()
                 .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
                 .credentials("yinzix@utas.edu.au", "NDAxMjQxNzMyODAwNWI2",Identifier.byName("Default"))
                 .scopeToProject(Identifier.byId("72a0388a8ea44bdeb096e05edc6974f8"))
-                .authenticate();
-
-        worker1OS = OSFactory.builderV3()
-                .endpoint("https://keystone.rc.nectar.org.au:5000/v3")
-                .credentials("yypeng@utas.edu.au", "Y2ZmYzE5Y2JjMWMwZjZk",Identifier.byName("Default"))
-                .scopeToProject(Identifier.byId("f4c9952b6d7843bcbc6c183a6617b150"))
                 .authenticate();
 
         worker2OS = OSFactory.builderV3()
@@ -71,7 +69,7 @@ public class Cloud {
     public static class newWorker{
         static String name = "newWorker";
         static String flavor = "cba9ea52-8e90-468b-b8c2-777a94d81ed3";
-        static String image = "64b013fb-0f56-418f-97e8-5ee3d1a9664b";
+        static String image = "9b0615c9-5fe2-4410-ad2a-a5306778496c";
         static String ip4 = null;
         static String status = Server.Status.UNKNOWN.name();
         static int powerState = 0;

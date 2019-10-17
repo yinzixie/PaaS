@@ -34,10 +34,14 @@ class ServerOneSecretary extends Thread {
         if(this.jobList.size() > 0) {
             for(Job job:this.jobList){
                 job.secretaryForWorker = null;
-                if(Storage.jobList.get(job.ID).state != DefaultKeys.jobSucceed || Storage.jobList.get(job.ID).state != DefaultKeys.jobCanceled) {
+                //System.out.println(Storage.jobList.get(job.ID).state);
+                if(Storage.jobList.get(job.ID).state.equals(DefaultKeys.jobSucceed) || Storage.jobList.get(job.ID).state.equals(DefaultKeys.jobCanceled)) {
+                    System.out.println("");
+                }else {
                     job.state = "Re Assigning...";
                     Storage.jLock.lock();
                     Storage.jobQueue.offer(job);
+                    System.out.println("Redistribution job:" + job.ID);
                     Storage.jLock.unlock();
                 }
             }
@@ -141,6 +145,11 @@ class ServerOneSecretary extends Thread {
                         jLock.unlock();
 
                         cancelJobToSecretary(out, cancelJob);
+
+                        Storage.jLock.lock();
+                        Storage.jobList.get(cancelJob.ID).state = DefaultKeys.jobCanceled;
+
+                        Storage.jLock.unlock();
                         //jobList.remove(cancelJob);
                     }
                     if(queryWorkerHealthy) {

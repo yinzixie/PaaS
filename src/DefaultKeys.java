@@ -60,13 +60,13 @@ public class DefaultKeys {
 
     public static final String workDir = "/home/ubuntu/PaaS/WorkDir/";
 
-    public static final String privateKey = "key.pem";//"/home/ubuntu/PaaS/key.pem";
+    public static final String privateKey = "/home/ubuntu/PaaS/key.pem"; //"key.pem";//
 
     public static final String masterIP = "144.6.227.102";//"localhost";//
 
-    public static final String worker1IP = "144.6.227.111";
+    public static final String worker0IP = "115.146.86.107";
     public static final String worker2IP = "144.6.227.90";//tommy
-    public static final String worker3IP = "115.146.84.200";
+    public static final String worker3IP = "115.146.86.167";
 
     public static final String outputFileName = "output.txt";
     public static final String billFileName = "bill.txt";
