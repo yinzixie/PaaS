@@ -1,0 +1,34 @@
+Step1: Login the master machine with Putty
+ip: ubuntu@144.6.227.102
+key.ppk 
+Port: 22
+
+Comannd:
+cd PaaS
+java -jar MasterEnd.jar
+
+
+
+--------------------------------------------
+Step2: Login the worker0 machine 
+ip: ubuntu@115.146.86.107
+key.ppk 
+Port: 22
+
+Comannd:
+cd PaaS
+java -jar WorkerEnd.jar
+
+
+--------------------------------------------
+Step3: run the UserEnd.java
+java UserEnd.java
+
+
+Command for starting a python job:
+start /home/ubuntu/app.py /home/ubuntu/input.txt 12:00
+
+Command for starting a python job:
+start /home/ubuntu/app.jar /home/ubuntu/input.txt 12:00
+
+Once you start a job, then the other commands allowed to use please see the menu
